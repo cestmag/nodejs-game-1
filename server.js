@@ -1290,13 +1290,7 @@ io.on('connection', (socket)=>{//function(socket){}
 
     //socket.emit('game-start','Game start')
 })
-server.listen(process.env.PORT||3000, function(error){
-    if(error){
-       console.log("errorrrr")
-    }else{
-       console.log("heyyyy")
-    }
-})
+
 //if(Object.values(rooms).length>=1){
 setInterval(() => {
     Object.values(rooms).forEach((room)=>{
@@ -1452,3 +1446,11 @@ setInterval(() => {
      return array
 
     }
+
+    server.listen(process.env.PORT||3000, function(error){
+        if(error){
+           console.log("errorrrr")
+        }else{
+           console.log("heyyyy")
+        }
+    }) 
