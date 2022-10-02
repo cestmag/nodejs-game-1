@@ -157,19 +157,19 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
 
         //c.drawImage(image,player.position.x, player.position.y, player.width, player.height)
         //c.fillRect(player.position.x, player.position.y, player.width, player.height)//画像になる
-        c.fillStyle= 'red'
+        c.fillStyle= '#ff0000'//red
         //c.fillText("hp:"+player.hp+"/"+player.hpMax,player.positionx, player.positiony-35)
         c.fillRect(player.positionx, player.positiony-35, player.hp*sizeOfbar, 5)//playerの上
-        c.fillStyle= ' gray'
+        c.fillStyle= '#808080'//' gray'
         c.fillRect(player.positionx+player.hp*sizeOfbar, player.positiony-35, (player.hpMax-player.hp)*sizeOfbar, 5)
-        c.fillStyle =' green'
+        c.fillStyle ='#008000'//' green'
         //c.fillText("bullets:"+player.shootRemain+"/"+player.beamMax,player.positionx, player.positiony-20)
         c.fillRect(player.positionx, player.positiony-30, player.shootRemain*sizeOfbullets, 5)
-        c.fillStyle= ' gray'
+        c.fillStyle= '#808080 '
         c.fillRect(player.positionx+player.shootRemain*sizeOfbullets, player.positiony-30, (player.beamMax-player.shootRemain)*sizeOfbullets, 5)
         c.font = '12px serif';
         if(player.socketID==socket.id){
-           c.fillStyle='yellow'
+           c.fillStyle='brown'
         }else{
            c.fillStyle ='white'
         }
