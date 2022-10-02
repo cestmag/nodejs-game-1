@@ -2,6 +2,9 @@ const express = require('express')//server end ctrl+c
 //const { platform } = require('os')
 const app= express()
 const server= require('http').Server(app)
+
+server.listen(process.env.PORT||3000)
+
 const io= require('socket.io')(server)
 const gravity=0.5
 const hane=1.5 //跳ね返る計数的な
@@ -1287,7 +1290,7 @@ io.on('connection', (socket)=>{//function(socket){}
 
     //socket.emit('game-start','Game start')
 })
-server.listen(process.env.PORT||3000)
+//server.listen(process.env.PORT||3000)
 //if(Object.values(rooms).length>=1){
 setInterval(() => {
     Object.values(rooms).forEach((room)=>{
