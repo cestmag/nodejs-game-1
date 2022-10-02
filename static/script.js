@@ -169,7 +169,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         c.fillRect(player.positionx+player.shootRemain*sizeOfbullets, player.positiony-30, (player.beamMax-player.shootRemain)*sizeOfbullets, 5)
         c.font = '12px serif';
         if(player.socketID==socket.id){
-           c.fillStyle='#000000'//black 'yellow'
+           c.fillStyle='#ffff00'//black 'yellow'
         }else{
            c.fillStyle ='#ffffff'//'white'
         }
