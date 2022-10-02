@@ -1073,6 +1073,7 @@ io.on('connection', (socket)=>{//function(socket){}
     
     let player = null;
     socket.on('online', (room, name) => {
+        console.log("current situation: ", rooms)
        /* if(rooms[room].connect==false){
         rooms[room].connect=true
     }*/
