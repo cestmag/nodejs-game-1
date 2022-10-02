@@ -1,5 +1,4 @@
-//server end ctrl+c
-const express = require('express')
+const express = require('express')//server end ctrl+c
 const { platform } = require('os')
 const app= express()
 const server= require('http').Server(app)
@@ -232,7 +231,7 @@ app.get('/:room',(req, res)=>{
     res.render('mainpage.ejs', {roomName: req.params.room})//mainpage.ejs
 })
 
-server.listen(3000)
+server.listen(process.env.PORT||3000)
 
 //const players=[]
 
