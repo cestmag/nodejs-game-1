@@ -1057,15 +1057,15 @@ class Beam{
 //let hpbars={}//いらないかも
 //const platforms =  [new Platform(400, 280, 500, 30), new Platform(180, 400, 200, 30),new Platform(900, 450, 200, 30)]
 const plat1= new Platform(260, 320, 500, 20)//80 to 950 //260 320 500 20
-//const plat2= new Platform(80, 450, 150, 20)
-//const plat3= new Platform(800, 450, 150, 20)
+const plat2= new Platform(80, 450, 150, 20)
+const plat3= new Platform(800, 450, 150, 20)
 const plat4= new Platform(80, 180, 150, 20)
 const plat5= new Platform(800, 180, 150, 20)
 //const plat6= new Platform()
 
 platforms[plat1.id]=plat1
-//platforms[plat2.id]=plat2
-//platforms[plat3.id]=plat3
+platforms[plat2.id]=plat2
+platforms[plat3.id]=plat3
 platforms[plat4.id]=plat4
 platforms[plat5.id]=plat5
 
