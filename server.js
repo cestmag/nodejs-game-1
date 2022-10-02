@@ -6,7 +6,7 @@ const server= require('http').Server(app)
 //server.listen(process.env.PORT||3000)
 
 const io= require('socket.io')(server)
-const gravity=0.3
+const gravity=0.3//0.5
 const hane=1.5 //跳ね返る計数的な
 const mojis="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 const url = require('url');  
@@ -310,13 +310,13 @@ class Player{//巨大化したりする
     move(ver){
       switch(ver){
         case 1://right
-            this.velocity.x=5
+            this.velocity.x=4 //5
             //console.log("right")
             //do
         break
 
         case 2://left
-            this.velocity.x=-5
+            this.velocity.x=-4 //-5
             //console.log("aaaaa",this.velocity.x)
         break
 
@@ -326,7 +326,7 @@ class Player{//巨大化したりする
         break
 
         case 4:
-            this.velocity.y-=1.8
+            this.velocity.y-=1.3 //-1.8
         break
 
         case 5:
