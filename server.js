@@ -1073,7 +1073,7 @@ io.on('connection', (socket)=>{//function(socket){}
     
     let player = null;
     socket.on('online', (room, name) => {
-        console.log("current situation: ", rooms)
+       // console.log("current situation: ", rooms)
        /* if(rooms[room].connect==false){
         rooms[room].connect=true
     }*/
@@ -1092,9 +1092,12 @@ io.on('connection', (socket)=>{//function(socket){}
         //beams[player.beam.id]=player.beam
         //hpbars[player.hpbar.id]=player.hpbar//いらないかも
         //socket.join(rooms[room])
-        console.log("user",player.id," joined in ",player.inRoom)
-        console.log("rooms",rooms)
+
+        //console.log("user",player.id," joined in ",player.inRoom)
+        //console.log("rooms",rooms)
+
         //console.log("total players",Object.keys(players).length)
+        
     });
 
     socket.on('start-ready', config=>{
