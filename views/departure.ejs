@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <script defer src="/socket.io/socket.io.js"></script>
+</head>
+<style>
+    body{
+      background-color: black;
+    }
+    #home{
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      font-family: 'Rajdhani', sans-serif;
+      margin-top: 15%;
+      color: rgb(36, 227, 49);
+    }
+    .yay{
+      margin: 5px;
+      padding: 5px;
+    }
+</style>
+<body>
+  <div id="home">
+   <h1 class="yay">Boxers in Space</h1>
+   <div id="mess" class="yay"><%=message%></div>
+   <form action="/room" method="POST">
+   <button id="but" type="submit" class="yay" >Click here to enter a new room</button><!--onclick="startbutton()"-->
+   </form>
+   
+  </div>
+ <!-- <script src="/static/depar.js"></script>-->
+</body>
+</html>

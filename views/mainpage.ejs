@@ -1,0 +1,235 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300&display=swap" rel="stylesheet">
+    <title>game</title>
+   <!-- <script defer src="/static/script.js"></script>-->
+    <meta name="description" content="ディスクリプション" />
+    <!--!!!!!!!!!!!!!!!!!!!下のが読み込まれない script.jsが-->
+    <!--http://localhost:3000はなくても同じ-->
+   <script defer src="/socket.io/socket.io.js"></script>
+   <script src="https://riversun.github.io/jsframe/jsframe.js"></script>
+    <style>
+    body{
+        margin: 0;
+        padding: 10px;
+        padding-top: 20px;
+        background-color: black;
+    }
+    .container{
+        display: flex;
+        font-family: 'Rajdhani', sans-serif;
+       
+        /*font-size: 20px;*/
+    }
+    #item{
+       margin: 0px;
+
+       padding: 20px;
+       border:  1px solid rgb(36,227,49);
+       /*width: 20%;*/
+    }
+    #item2{
+         margin: 0;
+         padding: 0;
+         /*width: 80%;*/
+        
+    }
+   canvas{
+    background-image: url(../static/pics/gameBackg.png);
+    /*background-position: bottom;*/
+   background-size: contain;
+   background-repeat: no-repeat;
+    background-color: rgb(8, 13, 105);
+    border: 1px solid rgb(36,227,49);
+    /*background: rgba(0, 0, 0, 0.6);*/
+    /*width: 500px;
+    height:500px;*/
+   }
+   
+   #message{
+     list-style: none;
+     color: rgb(36, 227, 49);
+     margin: 10px;
+     padding: 5px;
+     font-size:16px;
+     
+   }
+   #startBtn{
+    display: none;
+     margin: 10px;
+     padding: 5px;
+     width: 90%;
+   }
+   /*.sunroof{
+    display: none;
+     margin: 10px;
+     padding: 5px;
+     width: 90%;
+   }*/
+   /*.sunroof{
+     
+   }*/
+   /*canvas{
+    border-style: double;
+   }*/
+   
+   /*#timer{
+     position: absolute;
+     background-color: black;
+     color: aqua;
+     font-size: 50px;
+     font-family: 'Rajdhani', sans-serif;
+   }*/
+   #mat{
+    display: flex;
+     margin: 0;
+     padding: 0;
+     border-bottom: 1px solid rgb(36, 227, 49);
+   }
+   #clip{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    color:rgb(36, 227, 49);
+    border-bottom: 1px solid rgb(36, 227, 49);
+   }
+   #xxx{
+    margin: 10px;
+    margin-top: 0;
+    margin-bottom: 3px;
+    padding: 5px;
+    padding-top: 3px;
+   }
+   #copyTarget{
+    margin: 10px;
+    margin-bottom: 5px;
+    padding: 5px;
+   }
+   #cpbtn{
+     margin: 10px;
+     margin-top: 5px;
+     padding: 5px;
+   }
+   #setume{
+    display: none;
+    width: 50%;
+    color:rgb(36, 227, 49);
+    font-size:18px;
+    margin-left: 10px;
+    margin-top: 10px;
+    padding: 5px;
+    padding-right: 0px;
+   }
+   
+   #timer{
+    display: none;
+    width: 50%;
+    color:rgb(36, 227, 49) ;
+    font-size: 40px;
+    margin-left: 0px;
+    margin-top: 10px;
+    /*margin-left: auto;
+    margin-right: auto;*/
+    padding: 5px;
+    padding-left: 0;
+   }
+   #haa{
+      margin: 0px;
+      padding: 10px;
+      color:rgb(36, 227, 49) ;
+   }
+   #checkbo{
+    margin: 0px;
+    padding: 10px;
+    color:rgb(36, 227, 49) ;
+    text-align: center;
+   }
+   #MoreBtn{
+    display: none;
+     margin: 10px;
+     padding: 5px;
+     width: 90%;
+   }
+    #OutBtn{
+      display: none;
+     margin: 10px;
+     padding: 5px;
+     width: 90%; 
+    }
+   #yy{
+    margin: 0px;
+    padding: 0px;
+   }
+   strong{
+    color: red;
+   }
+   .mark{
+    color: blue;
+   }
+   .res{
+    color: green;
+   }
+   span{
+     color: blue;
+   }
+
+
+    </style>
+  
+  </head>
+  <body>
+  
+<!--  <div id="disc"></div>-->
+<div class="container"><!--sunrrof-->
+  <div id="item2" >
+    <canvas></canvas>
+    </div>
+  <div id="item">
+  <p id="haa" class="sunroof">Everyone who's gonna play the match w/ you is in this room already?</p>
+  <div id="checkbo">
+  Yeah <input type="checkbox" name="goo" value="Yes" id="chbox" onclick="Yaay(this)"></div>
+  <button id="startBtn" type="submit" onclick="StartButton()" class="sunroof">Ready to fight</button>
+  <div id="mat">
+  <div id="setume" class="sunroof"></div>
+  <div id="timer" class="sunroof">3:00</div>
+  </div>
+  <div id="clip" >
+  <input id="copyTarget" type="text" value="aaaa" readonly>
+  <button onclick="copyToClipboard()" id="cpbtn">Copy the link of this room</button>
+  <p id="xxx" class="sunroof">Send the link above to your friends to play this game</p>
+  </div>
+  <ul id="message"></ul>
+  <button id="MoreBtn" type="submit" onclick="more()" class="sunroof">One More Time</button>
+  <button id="OutBtn" type="submit" onclick="outta()" class="sunroof">Get outta here</button>
+<!-- <form id="sen" action="">
+  <input type="text" id="txtbox"><button>send</button>
+  </form>
+-->
+  </div>
+</div>
+  <img id="player-image" src="/static/pics/IMG_1899.PNG" style="display: none;">
+  <img id="player-image2" src="/static/pics/dotpict (1).png" style="display: none;">
+  <img id="player-image3" src="/static/pics/dotpict.png" style="display: none;">
+  <img id="player-image4" src="/static/pics/too.png" style="display: none;">
+  <img id="hpplus-image1" src="/static/pics/dotpict (3).png" style="display: none;">
+  <img id="enemy-image1" src="/static/pics/dotpictene.png" style="display: none;">
+ <!--<div id="timer">aaa</div>--> 
+  
+  <!--script.jsを/staticに入れると正常に動くがそうでないと上手く読み込めない-->
+ <script defer src="/static/script.js"></script>
+  <script>
+    const roomName="<%= roomName %>"
+    const jsFrame = new JSFrame();
+   // const link=location.href
+  
+
+  </script>
+
+  </body>
+</html>
