@@ -1,5 +1,5 @@
 const express = require('express')//server end ctrl+c
-const { platform } = require('os')
+//const { platform } = require('os')
 const app= express()
 const server= require('http').Server(app)
 const io= require('socket.io')(server)
