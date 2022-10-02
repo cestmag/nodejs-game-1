@@ -231,7 +231,7 @@ app.get('/:room',(req, res)=>{
     res.render('mainpage.ejs', {roomName: req.params.room})//mainpage.ejs
 })
 
-server.listen(process.env.PORT||3000)
+//server.listen(process.env.PORT||3000)
 
 //const players=[]
 
@@ -1285,7 +1285,7 @@ io.on('connection', socket=>{//function(socket){}
 
     //socket.emit('game-start','Game start')
 })
-
+server.listen(process.env.PORT||3000)
 //if(Object.values(rooms).length>=1){
 setInterval(() => {
     Object.values(rooms).forEach((room)=>{
