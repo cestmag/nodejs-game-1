@@ -75,7 +75,7 @@ app.post('/room',(req, res)=>{
         randomLetters+=mojis.charAt(x)
     }
     }while(rooms[randomLetters]!=null)
-    console.log("heyyy")
+    //console.log("heyyy")
     rooms[randomLetters]={
         NameOfroom:randomLetters,
         during:false, 
@@ -217,19 +217,19 @@ app.post('/room',(req, res)=>{
 })
 
 app.get('/:room',(req, res)=>{
-    if(rooms[req.params.room]==null/*||rooms[req.params.room]==undefined*/){//そして試合中であったら入れないようにする。
+  /* if(rooms[req.params.room]==null){//そして試合中であったら入れないようにする。
        //return res.redirect('/?error='+"theRoomNotExist")//query
        return res.redirect(url.format({
         pathname:"/",
         query:{"error":0}
        }))
-    }
-    if(rooms[req.params.room].during==true||rooms[req.params.room].incount==true||rooms[req.params.room].end==true){//sould
+    }*/
+   /* if(rooms[req.params.room].during==true||rooms[req.params.room].incount==true||rooms[req.params.room].end==true){//sould
         return res.redirect(url.format({
             pathname:"/",
             query:{"error":1}
            }))
-    }
+    }*/
     //console.log("attention",rooms)
     res.render('mainpage.ejs', {roomName: req.params.room})//mainpage.ejs
 })
