@@ -1066,7 +1066,7 @@ platforms[plat1.id]=plat1
 platforms[plat4.id]=plat4
 platforms[plat5.id]=plat5
 
-io.on('connection', socket=>{//function(socket){}
+io.on('connection', (socket)=>{//function(socket){}
     
     let player = null;
     socket.on('online', (room, name) => {
@@ -1074,7 +1074,9 @@ io.on('connection', socket=>{//function(socket){}
         rooms[room].connect=true
     }*/
         //totalPlayers+=1
+        console.log("hello "+socket.id)
         socket.join(room)
+        console.log("moving...")
         let lenOfpl=Object.values(rooms[room].players).length
         player = new Player(lenOfpl+1, room, name, socket.id);
         //player.socketID=socket.id
