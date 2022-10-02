@@ -103,9 +103,9 @@ addEventListener('keyup',(event)=>{//改善の余地大有り
 
 })*/
 //serverからgame startを受け取ったら//decreaseTimer()
-socket.on('current-situation',(situ)=>{
+/*socket.on('current-situation',(situ)=>{
     console.log(" current situation: ", situ)
-})
+})*/
 
 socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
     //console.log("q:",rooms.NameOfroom)
