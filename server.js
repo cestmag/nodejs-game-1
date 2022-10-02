@@ -326,7 +326,7 @@ class Player{//巨大化したりする
         break
 
         case 4:
-            this.velocity.y-=1.3 //-1.8
+            this.velocity.y-=1 //-1.8
         break
 
         case 5:
