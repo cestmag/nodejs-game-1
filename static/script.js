@@ -1,7 +1,7 @@
 const socket= io('https://boxersintheuniverse.herokuapp.com')//io('http://localhost:3000')
 
-//const playername=prompt("put player name")
-const playername="asshole"
+const playername=prompt("put player name")
+//const playername="asshole"
 const canvas= document.querySelector('canvas')
 /*
 ・shoot とshootEnd一つのemitにできる like movement
