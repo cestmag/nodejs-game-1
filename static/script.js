@@ -1,4 +1,4 @@
-const socket= io('http://localhost:3000')
+const socket= io('https://boxersintheuniverse.herokuapp.com')//io('http://localhost:3000')
 
 //const playername=prompt("put player name")
 const playername="asshole"
@@ -472,8 +472,8 @@ function Yaay(obj){
 }
 
 function outta(){
-    alert("You wanna really get out?")
-   // window.location='/'
+   // alert("You wanna really get out?")
+    window.location='/'
 }
 
 function more(){
