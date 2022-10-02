@@ -472,8 +472,8 @@ function Yaay(obj){
 }
 
 function outta(){
-   // alert("You wanna really get out?")
-    window.location='/'
+    alert("You wanna really get out?")
+   // window.location='/'
 }
 
 function more(){
