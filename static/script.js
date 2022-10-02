@@ -274,7 +274,7 @@ socket.on('end',val=>{
      //messagelist.appendChild(item2)
     }
     kyo=document.createElement('li')
-    kyo.textContent="------------------"
+    kyo.textContent="---------------"
     messagelist.appendChild(kyo)
 
     MoreBtn.style.display='block'
