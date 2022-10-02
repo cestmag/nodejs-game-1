@@ -65,7 +65,7 @@ addEventListener('keydown',(event)=>{
     if(command){
         
             movement[command] = true;
-            console.log("keudown",event.key)
+            //console.log("keudown",event.key)
             socket.emit('movement', movement);
     } 
     if(event.key=="j"||event.key=="l"){
@@ -81,7 +81,7 @@ addEventListener('keyup',(event)=>{//改善の余地大有り
     const command= KeyToCommand[event.key];
     if(command){
         movement[command]=false
-        console.log("keyup", event.key)
+        //console.log("keyup", event.key)
         socket.emit('movement', movement)
     }
     if(event.key=="j"||event.key=="l"){
