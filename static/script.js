@@ -118,7 +118,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
    }
    //console.log("hype :",rooms.temps)
     Object.values(platforms).forEach(platform=>{
-        c.fillStyle= 'black'
+        c.fillStyle= '#000000'
         c.fillRect(platform.positionx, platform.positiony, platform.width, platform.height)
     })
     //console.log("ll:"+rooms[roomName].temps)
@@ -136,7 +136,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
            if(beam!=undefined){
                 //console.log("qwe")
                
-                c.fillStyle= 'yellow'
+                c.fillStyle= '#ffff00'//'yellow'
                 
                 c.fillRect(beam.positionx, beam.positiony, beam.width, beam.height)
             }
@@ -169,15 +169,15 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         c.fillRect(player.positionx+player.shootRemain*sizeOfbullets, player.positiony-30, (player.beamMax-player.shootRemain)*sizeOfbullets, 5)
         c.font = '12px serif';
         if(player.socketID==socket.id){
-           c.fillStyle='brown'
+           c.fillStyle='#000000'//black 'yellow'
         }else{
-           c.fillStyle ='white'
+           c.fillStyle ='#ffffff'//'white'
         }
         
         
         c.fillText(player.playername, player.positionx, player.positiony - 40);
         if((rooms.hiroba==true||rooms.incount==true)&&player.ready==true){
-        c.fillStyle='red'    
+        c.fillStyle='#ff0000'    
         c.fillText("Ready to fight", player.positionx, player.positiony - 55);   
         }
         //c.fillText('hp: '+player.hp, player.position.x, player.position.y - 25)
