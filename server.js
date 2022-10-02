@@ -75,7 +75,7 @@ app.post('/room',(req, res)=>{
         randomLetters+=mojis.charAt(x)
     }
     }while(rooms[randomLetters]!=null)
-    
+    console.log("heyyy")
     rooms[randomLetters]={
         NameOfroom:randomLetters,
         during:false, 
