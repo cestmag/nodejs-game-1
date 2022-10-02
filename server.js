@@ -1097,7 +1097,7 @@ io.on('connection', (socket)=>{//function(socket){}
         //console.log("rooms",rooms)
 
         //console.log("total players",Object.keys(players).length)
-        
+       io.to(player.socketID).emit('current-situation',rooms)
     });
 
     socket.on('start-ready', config=>{
