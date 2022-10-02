@@ -6,7 +6,7 @@ const server= require('http').Server(app)
 //server.listen(process.env.PORT||3000)
 
 const io= require('socket.io')(server)
-const gravity=0.5
+const gravity=0.3
 const hane=1.5 //跳ね返る計数的な
 const mojis="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 const url = require('url');  
