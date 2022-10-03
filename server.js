@@ -944,7 +944,7 @@ class Beam{
 
 
 
-        this.width=20
+        this.width=30
         this.height=5
         this.finalX;
         this.finalY;
