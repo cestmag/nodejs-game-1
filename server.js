@@ -306,6 +306,8 @@ class Player{//巨大化したりする
         this.gotshot2=0;
 
         this.ahhh=false;
+
+        this.countSt=0
         //this.attackNow=false
         //this.whyy={1:'a',2:'b',3:'c'}
         //this.beam = null //new Beam()//player has a beam
@@ -406,13 +408,22 @@ class Player{//巨大化したりする
         if(this.gotshot-this.gotshot2>0/*&&this.ahhh==false*/){
             //do something to hide the character for a moment
             this.ahhh=true
-            this.gotshot2=this.gotshot
+           // this.gotshot2=this.gotshot
+            this.countSt+=1
+            if(this.countSt>4){
+                this.gotshot2=this.gotshot
+                this.countSt=0 
+            }
+            //console.log("ahhh", this.playername)
         }else{
             this.ahhh=false
+
+            //console.log(" not ahhh", this.playername)
         }
     }
 
     getDamaged(damage){
+        //console.log("getdamaged", this.playername)
         this.gotshot+=1
      if(rooms[this.inRoom].during==true||rooms[this.inRoom].hiroba==true){
        this.hp -=damage

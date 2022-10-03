@@ -154,7 +154,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
             c.drawImage(image,player.positionx, player.positiony, player.width, player.height) 
         }
         //player.gotshot2+=1
-    }else{
+    }else if(player.ahhh){
         c.fillStyle= '#ff0000'
         c.fillRect(player.positionx, player.positiony,player.width, player.height )
     }
