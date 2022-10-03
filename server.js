@@ -403,7 +403,7 @@ class Player{//巨大化したりする
             this.velocity.y=0 
         }
         //gotshot gotshot2
-        if(this.gotshot-this.gotshot2>0&&this.ahhh==false){
+        if(this.gotshot-this.gotshot2>0/*&&this.ahhh==false*/){
             //do something to hide the character for a moment
             this.ahhh=true
             this.gotshot2=this.gotshot
