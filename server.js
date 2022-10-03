@@ -410,7 +410,7 @@ class Player{//巨大化したりする
             this.ahhh=true
            // this.gotshot2=this.gotshot
             this.countSt+=1
-            if(this.countSt>2){
+            if(this.countSt>1){
                 this.gotshot2=this.gotshot
                 this.countSt=0 
             }
