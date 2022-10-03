@@ -732,6 +732,14 @@ class DeadMonkey{
             this.landed=true
            }
        }
+       let afterlike=this.judgementBeam() //letは同じブロック内からしか呼べない、varはどこからでも呼び出せる
+
+       if(afterlike.length>0){
+          for(let i=0; i<afterlike.length; i++){
+              afterlike[i].getDamaged(this.power)
+          }
+          this.remove()
+       }
     /*   let afterlike=this.judgementBeam() //letは同じブロック内からしか呼べない、varはどこからでも呼び出せる
 
        if(afterlike.length>0){
@@ -766,6 +774,14 @@ class DeadMonkey{
     judgement(obj){//floorにひっとしてるか
         return this.position.y + this.height<= obj.position.y &&this.position.y + this.height + this.velocity.y> obj.position.y&&this.position.x+ this.width >= obj.position.x && this.position.x <= obj.position.x+ obj.width
     }
+
+    judgement2(obj){//! something wrong with this!!!!!!!!!!!!!!!!!!improve
+        return obj.position.y-this.height/2<=this.position.y+this.height/2 
+        &&this.position.y+this.height/2<=obj.position.y-this.height/2+obj.height 
+        &&obj.position.x-this.width/2<=this.position.x+this.width/2 
+        &&this.position.x+this.width/2<=obj.position.x+this.width/2+obj.width
+    }
+
     judgementFloor(){
         return Object.values(platforms).some((platform) => {//some 1つでも条件を満たせばtrue otherwise false
             if(this.judgement(platform)){
@@ -774,7 +790,19 @@ class DeadMonkey{
         });
     }
 
-
+    judgementBeam(){
+        //当たったプレイヤーを入れる（連想)配列
+        var hitplayers=[]
+        Object.values(rooms[this.owner.inRoom].players).forEach((player)=>{
+            if(this.judgement2(player)&&this.owner!=player){
+                //t
+                //this.hitplayers.push(player)
+                hitplayers.push(player)
+            }
+        })
+        //console.log(hitplayers)
+        return hitplayers
+    }
 
     remove(){
         delete rooms[this.inRoom].buls[this.id]
@@ -1058,9 +1086,9 @@ class Beam{
         //console.log(hitplayers)
         return hitplayers
     }
-    velocityChange(){
+    /*velocityChange(){
         this.velocity.x
-    }
+    }*/
 
 
     remove(){
@@ -1151,17 +1179,17 @@ io.on('connection', (socket)=>{//function(socket){}
             })
             rooms[player.inRoom].hpplusTime=RandomNum(10,90,8)//170以上179以下
             rooms[player.inRoom].beamPlusTime=RandomNum(10,160,20)
-            console.log(rooms[player.inRoom])
+           // console.log(rooms[player.inRoom])
              io.to(config).emit('game-start-soon')
             //io.to(config).emit('game-start')
             //console.log(rooms)
             //emit('game-start'), send this to all the players in the same room
         }else if(startOk&&NumOfplayer<=1){
-            console.log("stop",player.socketID) 
+            //console.log("stop",player.socketID) 
            // io.sockets.socket(player.socketID).emit('please-wait',{message:"Waiting for other players to join..."});
             //socket.to(config).emit('please-wait',{message:"Waiting for other players to join..."})
             io.to(player.socketID).emit('please-wait',{message:"Waiting for other players to join..."})
-            console.log("qw")
+            //console.log("qw")
             //wating for another
 
         }else{
