@@ -88,7 +88,17 @@
      font-size: 50px;
      font-family: 'Rajdhani', sans-serif;
    }*/
-   button{
+   .trash{
+    font-family: 'VT323', monospace;
+    color:  rgb(36, 227, 49);
+	background: none;
+	border: 2px solid rgb(36, 227, 49);
+	outline: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+   }
+   /*button{
     font-family: 'VT323', monospace;
     color:  rgb(36, 227, 49);
 	background: none;
@@ -98,12 +108,12 @@
 	-moz-appearance: none;
 	appearance: none;
 
-   }
+   }*/
 
-   button:focus{
+   /*button:focus{
     background: rgb(36, 227, 49);
     color: black;
-   }
+   }*/
 
    input{
     font-family: 'VT323', monospace;
@@ -228,14 +238,14 @@
   <p id="haa" class="sunroof">Everyone who's gonna play this game with you is in this room already?</p>
   <div id="checkbo">
   Yeah <input type="checkbox" name="goo" value="Yes" id="chbox" onclick="Yaay(this)"></div>
-  <button id="startBtn" type="submit" onclick="StartButton()" class="sunroof">Ready to fight</button>
+  <button id="startBtn" type="submit" onclick="StartButton()" class="sunroof trash">Ready to fight</button>
   <div id="mat">
   <div id="setume" class="sunroof"></div>
   <div id="timer" class="sunroof">3:00</div>
   </div>
   <div id="clip" >
   <input id="copyTarget" type="text" value="" readonly>
-  <button onclick="copyToClipboard()" id="cpbtn">Copy the link of this room</button>
+  <button onclick="copyToClipboard()" id="cpbtn" class="trash">Copy the link of this room</button>
   <p id="xxx" class="sunroof">Send the link above to your friends to play this game</p>
   </div>
   <ul id="message">
@@ -247,8 +257,8 @@
      <li class="banana">-Reft beam: J key</li>
      <li class="banana">-Punch: I key</li>
   </ul>
-  <button id="MoreBtn" type="submit" onclick="more()" class="sunroof">One More Time</button>
-  <button id="OutBtn" type="submit" onclick="outta()" class="sunroof">Get outta here</button>
+  <button id="MoreBtn" type="submit" onclick="more()" class="sunroof trash">One More Time</button>
+  <button id="OutBtn" type="submit" onclick="outta()" class="sunroof trash">Get outta here</button>
 <!-- <form id="sen" action="">
   <input type="text" id="txtbox"><button>send</button>
   </form>
