@@ -300,6 +300,10 @@ class Player{//巨大化したりする
         this.onfloor=false;
 
         this.onPlayer=false;
+
+        this.gotshot=0;
+
+        this.gotshot2=0;
         //this.attackNow=false
         //this.whyy={1:'a',2:'b',3:'c'}
         //this.beam = null //new Beam()//player has a beam
@@ -399,6 +403,7 @@ class Player{//巨大化したりする
     }
 
     getDamaged(damage){
+        this.gotshot+=1
      if(rooms[this.inRoom].during==true||rooms[this.inRoom].hiroba==true){
        this.hp -=damage
        if(this.hp<=0&&rooms[this.inRoom].during==true){
@@ -557,7 +562,8 @@ class Player{//巨大化したりする
     toJSON(){
         return { id:this.id, positionx: this.position.x, positiony: this.position.y, width:this.width, height:this.height,
             beamclub: this.beamclub, hp:this.hp, hpMax:this.hpMax, shootRemain:this.shootRemain, beamMax:this.beamMax, gunLeft:this.gun.left,
-            gunRight:this.gun.right, playername:this.playername, ready:this.ready,socketID:this.socketID,punc:this.punc, die:this.die
+            gunRight:this.gun.right, playername:this.playername, ready:this.ready,socketID:this.socketID,punc:this.punc, die:this.die, gotshot:this.gotshot,
+            gotshot2:this.gotshot2
      }
     }
 
