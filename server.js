@@ -304,6 +304,8 @@ class Player{//巨大化したりする
         this.gotshot=0;
 
         this.gotshot2=0;
+
+        this.ahhh=false;
         //this.attackNow=false
         //this.whyy={1:'a',2:'b',3:'c'}
         //this.beam = null //new Beam()//player has a beam
@@ -399,6 +401,14 @@ class Player{//巨大化したりする
              this.velocity.y +=gravity 
         }else{
             this.velocity.y=0 
+        }
+        //gotshot gotshot2
+        if(this.gotshot-this.gotshot2>0/*&&this.ahhh==false*/){
+            //do something to hide the character for a moment
+            this.ahhh=true
+            this.gotshot2=this.gotshot
+        }else{
+            this.ahhh=false
         }
     }
 
@@ -562,8 +572,7 @@ class Player{//巨大化したりする
     toJSON(){
         return { id:this.id, positionx: this.position.x, positiony: this.position.y, width:this.width, height:this.height,
             beamclub: this.beamclub, hp:this.hp, hpMax:this.hpMax, shootRemain:this.shootRemain, beamMax:this.beamMax, gunLeft:this.gun.left,
-            gunRight:this.gun.right, playername:this.playername, ready:this.ready,socketID:this.socketID,punc:this.punc, die:this.die, gotshot:this.gotshot,
-            gotshot2:this.gotshot2
+            gunRight:this.gun.right, playername:this.playername, ready:this.ready,socketID:this.socketID,punc:this.punc, die:this.die,ahhh:this.ahhh
      }
     }
 
@@ -1415,23 +1424,6 @@ setInterval(() => {
        // }
         
         //console.log("llt",Object.keys(room)[0])
-        /*for(let key in room){
-            var loop=false
-           switch(key){
-            case "during":
-               if(room[key]==true){
-                loop=true
-               }
-            break
-
-            case "players":
-                if(loop==true){
-               Object.values(room[key]).forEach((player))
-                }
-            break
-           }
-             key: player and during, value: room[key]
-        }*/
         
         io.to(room.NameOfroom).emit('state', room, platforms)
     

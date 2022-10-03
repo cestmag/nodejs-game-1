@@ -1,4 +1,4 @@
-const socket= io('https://boxersintheuniverse.herokuapp.com')//io('http://localhost:3000')
+const socket=io('https://boxersintheuniverse.herokuapp.com') // io('https://boxersintheuniverse.herokuapp.com')//io('http://localhost:3000')
 
 const playername=prompt("put player name")
 //const playername="asshole"
@@ -142,7 +142,8 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
             }
         })
         //console.log("yo")
-       if(player.gotshot-player.gotshot2==0){
+        //console.log("tt",player.gotshot,player.gotshot2, player.socketID)
+       if(!player.ahhh){
         if(player.gunRight){
             c.drawImage(image2,player.positionx, player.positiony, player.width, player.height)
         }else if(player.gunLeft){
@@ -152,8 +153,12 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         }else{
             c.drawImage(image,player.positionx, player.positiony, player.width, player.height) 
         }
-        player.gotshot2+=1
+        //player.gotshot2+=1
+    }else{
+        c.fillStyle= '#ff0000'
+        c.fillRect(player.positionx, player.positiony,player.width, player.height )
     }
+    
         //ダメージを受けたら赤色にする
 
         //c.drawImage(image,player.position.x, player.position.y, player.width, player.height)
