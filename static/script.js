@@ -166,7 +166,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
     //if player.invisi==false and player.socketID==
     if(player.invisi==false||player.socketID==socket.id){
        if(player.invisi==true){
-        c.globalAlpha=0.8
+        c.globalAlpha=0.6
        }else{
         c.globalAlpha=1
        }
@@ -215,11 +215,11 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         c.fillText("Ready to fight", player.positionx, player.positiony - 55);   
         }
 
-        if(player.invisi==true){
+     /*   if(player.invisi==true){
             
         c.fillStyle='#ff0000'
         c.fillText("Invisible", player.positionx, player.positiony - 55); 
-        }
+        }*/
     }
         //c.fillText('hp: '+player.hp, player.position.x, player.position.y - 25)
         //c.fillText('lv.'+player.hp, player.position.x, player.position.y - 15)
