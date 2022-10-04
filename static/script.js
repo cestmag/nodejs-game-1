@@ -166,7 +166,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
     //if player.invisi==false and player.socketID==
     if(player.invisi==false||player.socketID==socket.id){
        if(player.invisi==true){
-        c.globalAlpha=0.6
+        c.globalAlpha=0.5
        }else{
         c.globalAlpha=1
        }
@@ -208,7 +208,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
            c.fillStyle ='#ffffff'//'white'
         }
         
-        c.globalAlpha=1
+        //c.globalAlpha=1
         c.fillText(player.playername, player.positionx, player.positiony - 40);
         if((rooms.hiroba==true||rooms.incount==true)&&player.ready==true){
         c.fillStyle='#ff0000'    
