@@ -1523,13 +1523,14 @@ setInterval(() => {
         if(room.deletee==true){
             //console.log('deletee by moi',rooms[room.NameOfroom])
             io.to(room.NameOfroom).emit('room-delete') 
+            
            // if(Object.values(room.players).length>=1){
-               
+               // io.to(room.NameOfroom).emit('room-delete') 
                 Object.values(room.players).forEach(player=>{
                     player=null
                 })
            // }
-           
+
           /*  Object.values(platforms).forEach(platform=>{
                 delete platforms[platform.id] 
                 platform=null
