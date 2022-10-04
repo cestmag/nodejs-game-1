@@ -67,7 +67,7 @@ app.post('/room',(req, res)=>{
             
             if(timer>=0){
 
-                if(rooms[targ].onway==true){
+                if(rooms[targ].onway==true){//!!!!!!!!!error undefined 
                     rooms[targ].realend==true
                     return
                 }
@@ -1295,7 +1295,7 @@ io.on('connection', (socket)=>{//function(socket){}
         //console.log("hello "+socket.id)
         socket.join(room)
         //console.log("moving...")
-        let lenOfpl=Object.values(rooms[room].players).length//errorrrrr!!!!!!!!!!!!!!!!!!
+        let lenOfpl=Object.values(rooms[room].players).length//errorrrrr!!!!!!!!!!!!!!!!!! undefined
         player = new Player(lenOfpl+1, room, name, socket.id);
         //player.socketID=socket.id
         rooms[room].players[player.id] = player;//socket.id
