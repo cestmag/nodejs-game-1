@@ -17,10 +17,6 @@ const playerHpMAx=100
 let platforms={}
 //let players={}
 let beams={}
-/*const ringName=document.getElementById('ring')
-const butto=document.getElementById('but')
-const lik=document.getElementById('linkk')
-const desc=document.getElementById('desc')*/
 
 app.set('views','./views')
 app.set('view-engine','ejs')
@@ -31,26 +27,6 @@ app.use(express.urlencoded({extended: true}))
 const rooms={/*name:{}*/}
 //when a room is created, add the room to the imagina array rooms
 //rooms[the random room name]={players:{}}
-/*var timer=180
-function decreaseTimer(){
-   
-    if(timer>=1){
-        var showMinute=(timer-timer%60)/60;
-        var showSecond=timer%60;
-        //console.log(showMinute+" "+showSecond)
-        timer--
-        if(showSecond<10){
-            showDisplay=showMinute+":0"+showSecond
-        }else{
-            showDisplay=showMinute+":"+showSecond
-        }
-        setTimeout(decreaseTimer, 1000)
-        console.log(showDisplay)
-        //document.querySelector('#timer').innerHTML=showDisplay
-    }
-}*/
-
-
 
 app.get('/',(req, res)=>{
     var message=req.query.error
@@ -86,23 +62,11 @@ app.post('/room',(req, res)=>{
         //console.log("ah",set)
         let targ=this.NameOfroom
         let timer=set
-        //console.log('why',timer)
-        //this.temps=180
-        //let showDisplay;
+       
         function decreaseTimer(){
             
             if(timer>=0){
-             /*   var showMinute=(timer-timer%60)/60;
-                var showSecond=timer%60;*/
-                //console.log(showMinute+" "+showSecond)
-                
-            /*    if(showSecond<10){
-                    showDisplay=showMinute+":0"+showSecond
-                }else{
-                    showDisplay=showMinute+":"+showSecond
-                }*/
-                //io.to(randomLetters).emit('countupdate', timer)
-                //console.log(rooms," ey")
+
                 if(rooms[targ].onway==true){
                     rooms[targ].realend==true
                     return
@@ -132,15 +96,18 @@ app.post('/room',(req, res)=>{
                     deadmonkey=new DeadMonkey(RandomNum(100,930,1)[0],targ)//出現座標指定 x座標80から950
                     rooms[targ].buls[deadmonkey.id]=deadmonkey
                 }
+                if(rooms[targ].invisibleTime.includes(timer)&&rooms[targ].during==true){
+                    //+hpをインスタンス化
+                    let invisiblea=null
+                    invisiblea=new InvisibleCloak(RandomNum(100,930,1)[0],targ)//出現座標指定 x座標80から950
+                    rooms[targ].invisible[invisiblea.id]=invisiblea
+                }
                 
                 rooms[targ].temps=timer
                 timer--
-                //console.log("what ",timer)
-                //console.log(targ)
-                //console.log(rooms[randomLetters].temps)
+                
                 setTimeout(decreaseTimer, 1000)
-                //console.log(showDisplay)
-                //document.querySelector('#timer').innerHTML=showDisplay
+              
             }else{
                 switch(ver){
                     case 1:
@@ -204,10 +171,12 @@ app.post('/room',(req, res)=>{
     hiroba:true,
     letsgo:false,
     hpplusTime:[],//hpplusが落とされるランダムな時間が入る、5つ　90sec以上
-    beamPlusTime:[],
+    beamPlusTime:[],//enemy ga syutugen suru toki
+    invisibleTime:[],
     hps:{},//+hp
     buls:{},//enemy
-    rest:{},
+    rest:{},//losers
+    invisible:{},//invisible cloak 
     onway:false,
     realend:false,
     connect:false}//結果箱 
@@ -301,6 +270,7 @@ class Player{//巨大化したりする
 
         this.onPlayer=false;
 
+      //-----
         this.gotshot=0;
 
         this.gotshot2=0;
@@ -308,6 +278,12 @@ class Player{//巨大化したりする
         this.ahhh=false;
 
         this.countSt=0
+     //------
+        this.invisibleNow=false
+
+        this.invisibleTime=0
+
+        this.invisibleDuration=500
         //this.attackNow=false
         //this.whyy={1:'a',2:'b',3:'c'}
         //this.beam = null //new Beam()//player has a beam
@@ -408,17 +384,21 @@ class Player{//巨大化したりする
         if(this.gotshot-this.gotshot2>0/*&&this.ahhh==false*/){
             //do something to hide the character for a moment
             this.ahhh=true
-           // this.gotshot2=this.gotshot
             this.countSt+=1
             if(this.countSt>1){
                 this.gotshot2=this.gotshot
                 this.countSt=0 
             }
-            //console.log("ahhh", this.playername)
         }else{
             this.ahhh=false
+        }
 
-            //console.log(" not ahhh", this.playername)
+        if(this.invisibleNow==true){
+            this.invisibleTime+=1
+            if(this.invisibleTime>this.invisibleDuration){
+                this.invisibleNow=false
+                this.invisibleTime=0
+            }
         }
     }
 
@@ -519,11 +499,11 @@ class Player{//巨大化したりする
             }
         })
 
-        Object.values(rooms[this.inRoom].buls).forEach((bul)=>{
-            if(this.newJudge(bul)/*&&player.die==false*/){
-                hitplayerss.push(bul)
-            }
-        })
+     //  Object.values(rooms[this.inRoom].buls).forEach((bul)=>{
+         //   if(this.newJudge(bul)/*&&player.die==false*/){
+         //       hitplayerss.push(bul)
+         //   }
+      //  })
         return hitplayerss
     }
     judgementPlayers(){
@@ -583,7 +563,8 @@ class Player{//巨大化したりする
     toJSON(){
         return { id:this.id, positionx: this.position.x, positiony: this.position.y, width:this.width, height:this.height,
             beamclub: this.beamclub, hp:this.hp, hpMax:this.hpMax, shootRemain:this.shootRemain, beamMax:this.beamMax, gunLeft:this.gun.left,
-            gunRight:this.gun.right, playername:this.playername, ready:this.ready,socketID:this.socketID,punc:this.punc, die:this.die,ahhh:this.ahhh
+            gunRight:this.gun.right, playername:this.playername, ready:this.ready,socketID:this.socketID,punc:this.punc, die:this.die,ahhh:this.ahhh,
+            invisi:this.invisibleNow,
      }
     }
 
@@ -599,10 +580,6 @@ class Player{//巨大化したりする
         io.to(this.inRoom).emit('dead',{outPlayer:this.socketID, name:this.playername,place:this.result})//this.result);
         //this=null//!!!!!!!!!!!!!!!!!!!!!!!
         if(place==1){
-            //game end
-            //you won
-            //rooms[this.inRoom].end=true 結果発表が終わってから
-            //let winner;
             Object.values(rooms[this.inRoom].players).forEach(player=>{
                 //winner=player
                 io.to(this.inRoom).emit('win',{who:player.playername, sid:player.socketID})
@@ -613,9 +590,15 @@ class Player{//巨大化したりする
             rooms[this.inRoom].during=false
             io.to(this.inRoom).emit('end',{result:rooms[this.inRoom].result})
             //io.to(this.inRoom).emit('win',{who:winner.playername, sid:winner.socketID})
-            console.log("end")
+            //console.log("end")
            //this=null
         }
+    }
+
+    beInvisible(){
+       //console.log("invisible", this.playername)
+       this.invisibleNow=true
+     
     }
 
 }
@@ -667,9 +650,7 @@ class Platform{
                 break
             }
         }
-        //this.position.y+= this.velocity.y
-       
-        //動く
+
     }
     toJSON(){
         return { id:this.id, positionx: this.position.x, positiony: this.position.y, width:this.width, height:this.height,
@@ -700,7 +681,7 @@ class DeadMonkey{
          
          this.count=RandomNum(100,300,1)[0]
 
-        this.hpMax=100
+        this.hpMax=50
         this.hp=this.hpMax
 
         this.endcount=0
@@ -715,9 +696,21 @@ class DeadMonkey{
         this.landed=false
 
         this.landcount=0
+
+        this.awake=0
+
+        this.gotshot=0;
+
+        this.gotshot2=0;
+
+        this.ahhh=false;
+
+        this.countSt=0
           
     }
     update(){
+        
+
         this.count--
         if(this.position.y + this.height + this.velocity.y < 1000){//!!!!!!!!!!!!!!!!!!!!!!!!!1000=canvas.height
             this.velocity.y +=gravity 
@@ -740,17 +733,7 @@ class DeadMonkey{
           }
           this.remove()
        }
-    /*   let afterlike=this.judgementBeam() //letは同じブロック内からしか呼べない、varはどこからでも呼び出せる
-
-       if(afterlike.length>0){
-
-          for(let i=0; i<afterlike.length; i++){
-              afterlike[i].getHp(this.power)
-              //ここでeffect this.eff=null, this.eff= new HpplusEffect()
-          }
-          this.remove()
-          return
-       }*/
+    //letは同じブロック内からしか呼べない、varはどこからでも呼び出せる
       if(this.landed==true){
          this.position.x+=this.velocity.x*this.leftRight
       }else{
@@ -770,7 +753,38 @@ class DeadMonkey{
             //this.remove()
          }
 
+         if(this.awake<10){
+            this.awake+=1
+         }else{
+            this.awake=0
+         }
+
+         if(this.gotshot-this.gotshot2>0/*&&this.ahhh==false*/){
+            this.ahhh=true
+            this.countSt+=1
+            if(this.countSt>1){
+                this.gotshot2=this.gotshot
+                this.countSt=0 
+            }
+        }else{
+            this.ahhh=false
+        }
     }
+
+    getDamaged(damage){
+        //console.log("getdamaged", this.playername)
+        this.gotshot+=1
+     if(rooms[this.inRoom].during==true||rooms[this.inRoom].hiroba==true){
+       this.hp -=damage
+       if(this.hp<=0&&rooms[this.inRoom].during==true){
+         this.remove()
+       }else if(this.hp<=0&&rooms[this.inRoom].during==false){
+         this.hp=this.hpMax
+       }
+       //表示される画像を変える。
+    }
+    }
+
     judgement(obj){//floorにひっとしてるか
         return this.position.y + this.height<= obj.position.y &&this.position.y + this.height + this.velocity.y> obj.position.y&&this.position.x+ this.width >= obj.position.x && this.position.x <= obj.position.x+ obj.width
     }
@@ -780,6 +794,37 @@ class DeadMonkey{
         &&this.position.y+this.height/2<=obj.position.y-this.height/2+obj.height 
         &&obj.position.x-this.width/2<=this.position.x+this.width/2 
         &&this.position.x+this.width/2<=obj.position.x+this.width/2+obj.width
+    }
+
+    newJudge(obj){
+        
+
+
+        return (this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/           //1
+        && obj.position.x/*+obj.velocity.x*/<=this.position.x+this.width/*+this.velocity.x*/
+        && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/
+        && obj.position.y/*+obj.velocity.y*/<=this.position.y+this.width/*+this.velocity.y*/
+      /*  && (this.position.x>obj.position.x|| obj.position.x>this.position.x+this.width
+            ||this.position.y>obj.position.y||obj.position.y>this.position.y+this.height)*/
+        )
+        ||(this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/+obj.width
+            && obj.position.x/*+obj.velocity.x*/+obj.width<=this.position.x+this.width/*+this.velocity.x*/ //2
+            && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/+obj.height
+            && obj.position.y/*+obj.velocity.y*/+obj.height<=this.position.y+this.width/*+this.velocity.y*/
+            /*&& (this.position.x>obj.position.x+obj.width|| obj.position.x+obj.width>this.position.x+this.width
+                ||this.position.y>obj.position.y+obj.height||obj.position.y+obj.height>this.position.y+this.height)*/)
+        ||(this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/+obj.width //4
+            && obj.position.x/*+obj.velocity.x*/+obj.width<=this.position.x+this.width/*+this.velocity.x*/
+            && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/
+            && obj.position.y/*+obj.velocity.y*/<=this.position.y+this.width/*+this.velocity.y*/
+          /*  && (this.position.x>obj.position.x+obj.width|| obj.position.x+obj.width>this.position.x+this.width
+                ||this.position.y>obj.position.y||obj.position.y>this.position.y+this.height)*/)
+        ||(this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/ //3
+            && obj.position.x/*+obj.velocity.x*/<=this.position.x+this.width/*+this.velocity.x*/
+            && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/+obj.height
+            && obj.position.y/*+obj.velocity.y*/+obj.height<=this.position.y+this.width/*+this.velocity.y*/
+            /*&& (this.position.x>obj.position.x|| obj.position.x>this.position.x+this.width
+                ||this.position.y>obj.position.y+obj.height||obj.position.y+obj.height>this.position.y+this.height)*/)
     }
 
     judgementFloor(){
@@ -793,8 +838,8 @@ class DeadMonkey{
     judgementBeam(){
         //当たったプレイヤーを入れる（連想)配列
         var hitplayers=[]
-        Object.values(rooms[this.owner.inRoom].players).forEach((player)=>{
-            if(this.judgement2(player)&&this.owner!=player){
+        Object.values(rooms[this.inRoom].players).forEach((player)=>{
+            if(this.newJudge(player)&&this.owner!=player){
                 //t
                 //this.hitplayers.push(player)
                 hitplayers.push(player)
@@ -804,12 +849,14 @@ class DeadMonkey{
         return hitplayers
     }
 
+
     remove(){
         delete rooms[this.inRoom].buls[this.id]
         //this=null
      }
      toJSON(){
         return { id:this.id, positionx: this.position.x, positiony: this.position.y, width:this.width, height:this.height,
+            borw:this.awake,  ahhh:this.ahhh, hp:this.hp, hpMax:this.hpMax,
             
      }
 
@@ -892,11 +939,43 @@ class HpPlus{
         &&obj.position.x-this.width/2<=this.position.x+this.width/2 
         &&this.position.x+this.width/2<=obj.position.x+this.width/2+obj.width
     }
+
+    newJudge(obj){//extends
+        
+
+
+        return (this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/           //1
+        && obj.position.x/*+obj.velocity.x*/<=this.position.x+this.width/*+this.velocity.x*/
+        && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/
+        && obj.position.y/*+obj.velocity.y*/<=this.position.y+this.width/*+this.velocity.y*/
+      /*  && (this.position.x>obj.position.x|| obj.position.x>this.position.x+this.width
+            ||this.position.y>obj.position.y||obj.position.y>this.position.y+this.height)*/
+        )
+        ||(this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/+obj.width
+            && obj.position.x/*+obj.velocity.x*/+obj.width<=this.position.x+this.width/*+this.velocity.x*/ //2
+            && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/+obj.height
+            && obj.position.y/*+obj.velocity.y*/+obj.height<=this.position.y+this.width/*+this.velocity.y*/
+            /*&& (this.position.x>obj.position.x+obj.width|| obj.position.x+obj.width>this.position.x+this.width
+                ||this.position.y>obj.position.y+obj.height||obj.position.y+obj.height>this.position.y+this.height)*/)
+        ||(this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/+obj.width //4
+            && obj.position.x/*+obj.velocity.x*/+obj.width<=this.position.x+this.width/*+this.velocity.x*/
+            && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/
+            && obj.position.y/*+obj.velocity.y*/<=this.position.y+this.width/*+this.velocity.y*/
+          /*  && (this.position.x>obj.position.x+obj.width|| obj.position.x+obj.width>this.position.x+this.width
+                ||this.position.y>obj.position.y||obj.position.y>this.position.y+this.height)*/)
+        ||(this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/ //3
+            && obj.position.x/*+obj.velocity.x*/<=this.position.x+this.width/*+this.velocity.x*/
+            && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/+obj.height
+            && obj.position.y/*+obj.velocity.y*/+obj.height<=this.position.y+this.width/*+this.velocity.y*/
+            /*&& (this.position.x>obj.position.x|| obj.position.x>this.position.x+this.width
+                ||this.position.y>obj.position.y+obj.height||obj.position.y+obj.height>this.position.y+this.height)*/)
+    }
+
     judgementBeam(){
         //当たったプレイヤーを入れる（連想)配列
         var hitplayers=[]
         Object.values(rooms[this.inRoom].players).forEach((player)=>{
-            if(this.judgement2(player)&&this.owner!=player/*&&player.die*/){
+            if(this.newJudge(player)&&this.owner!=player/*&&player.die*/){
                 //t
                 //this.hitplayers.push(player)
                 hitplayers.push(player)
@@ -914,30 +993,52 @@ class HpPlus{
   }
 }
 
+class InvisibleCloak extends HpPlus{
+   constructor(xStart,room){
+     super(xStart,room)
+
+   }
+   update(){
+    this.count++
+    if(this.position.y + this.height + this.velocity.y < 1000){//!!!!!!!!!!!!!!!!!!!!!!!!!1000=canvas.height
+        this.velocity.y +=gravity 
+   }else{
+       this.velocity.y=0
+   }
+  if(this.judgementFloor()){
+       // this.velocity.y=0//ここを変えればバウンドする
+       this.velocity.y=-this.velocity.y*0.5
+   }
+   let afterlike=this.judgementBeam() //letは同じブロック内からしか呼べない、varはどこからでも呼び出せる
+
+   if(afterlike.length>0){
+
+      for(let i=0; i<afterlike.length; i++){
+          afterlike[i].beInvisible()
+          //ここでeffect this.eff=null, this.eff= new HpplusEffect()
+      }
+      this.remove()
+      return
+   }
+ 
+     this.position.x+=this.velocity.x
+     this.position.y+=this.velocity.y
+
+     if(this.count>200){//when to be removed
+        this.remove()
+        return
+     }
+
+   }
+   remove(){
+    delete rooms[this.inRoom].invisible[this.id]
+    //this=null
+ }
+}
+
 class HpplusEffect{
 
 }
-
-/*class HpBar{
-    constructor(){
-        this.id=Math.floor(Math.random()*100000000);
-        this.width=100//!!!!!!!!player.hpと関連させる
-        this.height=10
-    }
-    draw(posix, posiy, whatwidth, whatheight){
-        this.position = {
-            x:posix,
-            y:posiy
-        } 
-        this.width=whatwidth
-        this.height=whatheight 
-        c.fillStyle= 'pink'
-        c.fillRect(this.position.x-15, this.position.y, this.width, this.height)
-    }
-   update(){
-        this.draw()
-    }
-}*/
 
 class Beam{
     constructor(posix, posiy, which, obj,shosoku){//objはbeamの持ち主
@@ -984,7 +1085,7 @@ class Beam{
         this.speed=15
         //this.which=0;
         this.id=Math.floor(Math.random()*100000000);
-        this.power=10 
+        this.power=10
        // this.bullets;
         this.bulletsMax;
         this.hitbeam=0
@@ -1073,14 +1174,54 @@ class Beam{
 
     }
 
+    newJudge(obj){
+        
+
+
+        return (this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/           //1
+        && obj.position.x/*+obj.velocity.x*/<=this.position.x+this.width/*+this.velocity.x*/
+        && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/
+        && obj.position.y/*+obj.velocity.y*/<=this.position.y+this.width/*+this.velocity.y*/
+      /*  && (this.position.x>obj.position.x|| obj.position.x>this.position.x+this.width
+            ||this.position.y>obj.position.y||obj.position.y>this.position.y+this.height)*/
+        )
+        ||(this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/+obj.width
+            && obj.position.x/*+obj.velocity.x*/+obj.width<=this.position.x+this.width/*+this.velocity.x*/ //2
+            && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/+obj.height
+            && obj.position.y/*+obj.velocity.y*/+obj.height<=this.position.y+this.width/*+this.velocity.y*/
+            /*&& (this.position.x>obj.position.x+obj.width|| obj.position.x+obj.width>this.position.x+this.width
+                ||this.position.y>obj.position.y+obj.height||obj.position.y+obj.height>this.position.y+this.height)*/)
+        ||(this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/+obj.width //4
+            && obj.position.x/*+obj.velocity.x*/+obj.width<=this.position.x+this.width/*+this.velocity.x*/
+            && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/
+            && obj.position.y/*+obj.velocity.y*/<=this.position.y+this.width/*+this.velocity.y*/
+          /*  && (this.position.x>obj.position.x+obj.width|| obj.position.x+obj.width>this.position.x+this.width
+                ||this.position.y>obj.position.y||obj.position.y>this.position.y+this.height)*/)
+        ||(this.position.x/*+this.velocity.x*/<=obj.position.x/*+obj.velocity.x*/ //3
+            && obj.position.x/*+obj.velocity.x*/<=this.position.x+this.width/*+this.velocity.x*/
+            && this.position.y/*+this.velocity.y*/<=obj.position.y/*+obj.velocity.y*/+obj.height
+            && obj.position.y/*+obj.velocity.y*/+obj.height<=this.position.y+this.width/*+this.velocity.y*/
+            /*&& (this.position.x>obj.position.x|| obj.position.x>this.position.x+this.width
+                ||this.position.y>obj.position.y+obj.height||obj.position.y+obj.height>this.position.y+this.height)*/)
+    }
+   
+
     judgementBeam(){
         //当たったプレイヤーを入れる（連想)配列
         var hitplayers=[]
         Object.values(rooms[this.owner.inRoom].players).forEach((player)=>{
-            if(this.judgement2(player)&&this.owner!=player){
+            if(this.newJudge(player)&&this.owner!=player){
                 //t
                 //this.hitplayers.push(player)
                 hitplayers.push(player)
+            }
+        })
+
+        Object.values(rooms[this.owner.inRoom].buls).forEach((each)=>{
+            if(this.newJudge(each)/*&&this.owner!=player*/){
+                //t
+                //this.hitplayers.push(player)
+                hitplayers.push(each)
             }
         })
         //console.log(hitplayers)
@@ -1177,9 +1318,9 @@ io.on('connection', (socket)=>{//function(socket){}
                 each.shootRemain=each.beamMax
                 each.again=false
             })
-            rooms[player.inRoom].hpplusTime=RandomNum(10,90,8)//170以上179以下
-            rooms[player.inRoom].beamPlusTime=RandomNum(10,160,20)
-           // console.log(rooms[player.inRoom])
+            rooms[player.inRoom].hpplusTime=RandomNum(10,90,8)//170以上179以下 8ko
+            rooms[player.inRoom].beamPlusTime=RandomNum(10,160,15)// 10ko
+            rooms[player.inRoom].invisibleTime=RandomNum(150, 180,10)
              io.to(config).emit('game-start-soon')
             //io.to(config).emit('game-start')
             //console.log(rooms)
@@ -1352,16 +1493,7 @@ io.on('connection', (socket)=>{//function(socket){}
 //if(Object.values(rooms).length>=1){
 setInterval(() => {
     Object.values(rooms).forEach((room)=>{
-        //var loop=false
-        //console.log("see",players, Object.keys(players).length)
-       /* for(let id in players){
-          
-        }*/
-        //
-        //room[Object.keys(room)[0]]
-        //Object.values(room)[0] Object.values(room)[1]
-      //  if(Object.values(room)[0]==true){
-        //0:during 1:end 2:players 3:result 4:
+
         if(room.deletee==true){
             //console.log('deletee by moi',rooms[room.NameOfroom])
             io.to(room.NameOfroom).emit('room-delete')
@@ -1420,6 +1552,9 @@ setInterval(() => {
          })
          Object.values(room.buls).forEach((monk)=>{
             monk.update()
+         })
+         Object.values(room.invisible).forEach((cloak)=>{
+            cloak.update()
          })
     
           // if(room!=undefined||room!=null){

@@ -1,4 +1,4 @@
-const socket=io('https://boxersintheuniverse.herokuapp.com') // io('https://boxersintheuniverse.herokuapp.com')//io('http://localhost:3000')
+const socket=io('http://localhost:3000') // io('https://boxersintheuniverse.herokuapp.com')//io('http://localhost:3000')
 
 const playername=prompt("put player name")
 //const playername="asshole"
@@ -30,6 +30,8 @@ const image3= document.getElementById("player-image3")
 const image4= document.getElementById("player-image4")
 const hpplusImage= document.getElementById("hpplus-image1")
 const enemyImage=document.getElementById("enemy-image1")
+const enemyImage2=document.getElementById("enemy-image2")
+const invisible=document.getElementById("invisible-image")
 
 const stbtn=document.getElementById("startBtn")
 const zikan=document.getElementById('timer')
@@ -126,7 +128,24 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         c.drawImage(hpplusImage,hpplus.positionx,hpplus.positiony, hpplus.width, hpplus.height)
     })
     Object.values(rooms.buls).forEach(enemy=>{
+        if(!enemy.ahhh){
+        if(enemy.borw<6){
         c.drawImage(enemyImage,enemy.positionx,enemy.positiony, enemy.width, enemy.height)
+        }else{
+        c.drawImage(enemyImage2,enemy.positionx,enemy.positiony, enemy.width, enemy.height)   
+        }
+        }else{
+            c.fillStyle= '#000000'
+            c.fillRect(enemy.positionx, enemy.positiony,enemy.width, enemy.height )
+        }
+        c.fillStyle= '#ff0000'//red
+        //c.fillText("hp:"+player.hp+"/"+player.hpMax,player.positionx, player.positiony-35)
+        c.fillRect(enemy.positionx, enemy.positiony-30, enemy.hp*1, 5)//playerの上 0.5 sizeOfbar
+        c.fillStyle= '#808080'//' gray'
+        c.fillRect(enemy.positionx+enemy.hp*1, enemy.positiony-30, (enemy.hpMax-enemy.hp)*1, 5)
+    })
+    Object.values(rooms.invisible).forEach((cloak)=>{
+        c.drawImage(invisible,cloak.positionx,cloak.positiony, cloak.width, cloak.height)
     })
 
     Object.values(rooms.players).forEach(player=>{//rooms[roomName].players
@@ -143,6 +162,8 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         })
         //console.log("yo")
         //console.log("tt",player.gotshot,player.gotshot2, player.socketID)
+    //if player.invisi==false and player.socketID==
+    if(player.invisi==false||player.socketID==socket.id){
        if(!player.ahhh){
         if(player.gunRight){
             c.drawImage(image2,player.positionx, player.positiony, player.width, player.height)
@@ -186,6 +207,12 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         c.fillStyle='#ff0000'    
         c.fillText("Ready to fight", player.positionx, player.positiony - 55);   
         }
+
+        if(player.invisi==true){
+        c.fillStyle='#ff0000'
+        c.fillText("Invisible", player.positionx, player.positiony - 55); 
+        }
+    }
         //c.fillText('hp: '+player.hp, player.position.x, player.position.y - 25)
         //c.fillText('lv.'+player.hp, player.position.x, player.position.y - 15)
         //ここにhpbarもかく
