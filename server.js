@@ -270,7 +270,7 @@ class Player{//巨大化したりする
 
         this.onPlayer=false;
 
-      //-----
+      //-----change the photo to show when attacked
         this.gotshot=0;
 
         this.gotshot2=0;
@@ -1503,22 +1503,22 @@ setInterval(() => {
 
         if(room.deletee==true){
             //console.log('deletee by moi',rooms[room.NameOfroom])
-            io.to(room.NameOfroom).emit('room-delete')
-            Object.values(room.players).forEach(player=>{
-                player=null
-            })
-
+        
+            if(Object.values(room.players).length>1){
+                io.to(room.NameOfroom).emit('room-delete') 
+                Object.values(room.players).forEach(player=>{
+                    player=null
+                })
+            }
           /*  Object.values(platforms).forEach(platform=>{
                 delete platforms[platform.id] 
                 platform=null
             })*/
-           delete rooms[room.NameOfroom] 
-           //rooms[room.NameOfroom]=null
-          /*  rooms[room.NameOfroom]=null
-            room=undefined*/
+            delete rooms[room.NameOfroom] 
+            
             room=null//undefined
-            console.log("room-delete", room)
-            //console.log('deletee by moi',room)
+           // console.log("room-delete", room)
+           
            /* if (typeof window !== 'undefined') {
                 window.location.href="localhost:3000"
               }*/
