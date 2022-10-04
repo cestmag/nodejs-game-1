@@ -885,6 +885,8 @@ class HpPlus{
          this.power=3
          
          this.count=0
+
+         this.duration=300
           
     }
     update(){
@@ -913,7 +915,7 @@ class HpPlus{
          this.position.x+=this.velocity.x
          this.position.y+=this.velocity.y
 
-         if(this.count>300){
+         if(this.count>this.duration){
             this.remove()
             return
          }
@@ -1014,17 +1016,22 @@ class InvisibleCloak extends HpPlus{
    if(afterlike.length>0){
 
       for(let i=0; i<afterlike.length; i++){
+        if(afterlike[i].invisibleNow==false){
           afterlike[i].beInvisible()
-          //ここでeffect this.eff=null, this.eff= new HpplusEffect()
+          this.remove()
+          break
       }
-      this.remove()
+          //ここでeffect this.eff=null, this.eff= new HpplusEffect()
+          
+      }
+      //this.remove()
       return
    }
  
      this.position.x+=this.velocity.x
      this.position.y+=this.velocity.y
 
-     if(this.count>200){//when to be removed
+     if(this.count>this.duration){//when to be removed
         this.remove()
         return
      }
