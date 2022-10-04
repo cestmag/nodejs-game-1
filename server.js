@@ -889,6 +889,8 @@ class HpPlus{
          this.count=0
 
          this.duration=300
+
+        // this.effect=new HpplusEffect()
           
     }
     update(){
@@ -921,6 +923,7 @@ class HpPlus{
 
          if(this.count>this.duration){
             this.remove()
+            this.effect=null
             return
          }
 
@@ -1048,7 +1051,12 @@ class InvisibleCloak extends HpPlus{
 }
 
 class HpplusEffect{
+    constructor(){
 
+    }
+    update(){
+
+    }
 }
 
 class Beam{
