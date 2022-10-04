@@ -1504,7 +1504,7 @@ setInterval(() => {
         if(room.deletee==true){
             //console.log('deletee by moi',rooms[room.NameOfroom])
         
-            if(Object.values(room.players).length>1){
+            if(Object.values(room.players).length>=1){
                 io.to(room.NameOfroom).emit('room-delete') 
                 Object.values(room.players).forEach(player=>{
                     player=null
