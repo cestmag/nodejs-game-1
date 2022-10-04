@@ -677,7 +677,7 @@ class DeadMonkey{
          this.width =30
          this.height=30 
 
-         this.power=3
+         this.power=15
          
          this.count=RandomNum(100,300,1)[0]
 
@@ -884,7 +884,7 @@ class HpPlus{
          this.width =30
          this.height=30 
 
-         this.power=3
+         this.power=8
          
          this.count=0
 
@@ -907,7 +907,9 @@ class HpPlus{
        if(afterlike.length>0){
 
           for(let i=0; i<afterlike.length; i++){
+            if(afterlike[i].invisibleNow==false){
               afterlike[i].getHp(this.power)
+            }
               //ここでeffect this.eff=null, this.eff= new HpplusEffect()
           }
           this.remove()
