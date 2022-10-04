@@ -1320,7 +1320,7 @@ io.on('connection', (socket)=>{//function(socket){}
             })
             rooms[player.inRoom].hpplusTime=RandomNum(10,90,8)//170以上179以下 8ko
             rooms[player.inRoom].beamPlusTime=RandomNum(10,160,15)// 10ko
-            rooms[player.inRoom].invisibleTime=RandomNum(150, 180,10)
+            rooms[player.inRoom].invisibleTime=RandomNum(30, 180,10)
              io.to(config).emit('game-start-soon')
             //io.to(config).emit('game-start')
             //console.log(rooms)
