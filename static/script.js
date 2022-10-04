@@ -179,7 +179,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         }else if(player.punc){
             c.drawImage(image4,player.positionx, player.positiony, player.width, player.height) 
         }else{
-            c.drawImage(image,player.positionx, player.positiony, player.width, player.height) 
+            c.drawImage(image,player.positionx, player.positiony, player.width, player.height) //eroor :Uncaught DOMException: Failed to execute 'drawImage' on 'CanvasRenderingContext2D': The HTMLImageElement provided is in the 'broken' state
         }
         //player.gotshot2+=1
     }else if(player.ahhh){
