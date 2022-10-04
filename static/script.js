@@ -166,7 +166,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
     //if player.invisi==false and player.socketID==
     if(player.invisi==false||player.socketID==socket.id){
        if(player.invisi==true){
-        c.globalAlpha=0.3
+        c.globalAlpha=0.5
        }else{
         c.globalAlpha=1
        }
