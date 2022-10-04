@@ -4,7 +4,7 @@ const app= express()
 const server= require('http').Server(app)
 
 //server.listen(process.env.PORT||3000)
-
+//部屋mに誰もいなくなったら削除する
 const io= require('socket.io')(server)
 const gravity=0.3//0.5
 const hane=1.5 //跳ね返る計数的な
@@ -1422,10 +1422,17 @@ io.on('connection', (socket)=>{//function(socket){}
         }else{
         delete rooms[player.inRoom].rest[player.id]; 
         }
+
+        if(Object.values(rooms[player.inRoom].players).length+Object.values(rooms[player.inRoom].rest).length==0){//if there's no one
+             rooms[player.inRoom].deletee=true
+        }
     }
         //rooms[player.inRoom].rest[player.id]=player
        // console.log("bye",player.playername, rooms[player.inRoom].end)
+
         player = null;
+
+        
         
     });
 
