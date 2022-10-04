@@ -1295,7 +1295,7 @@ io.on('connection', (socket)=>{//function(socket){}
         //console.log("hello "+socket.id)
         socket.join(room)
         //console.log("moving...")
-        let lenOfpl=Object.values(rooms[room].players).length
+        let lenOfpl=Object.values(rooms[room].players).length//errorrrrr!!!!!!!!!!!!!!!!!!
         player = new Player(lenOfpl+1, room, name, socket.id);
         //player.socketID=socket.id
         rooms[room].players[player.id] = player;//socket.id
