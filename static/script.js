@@ -110,6 +110,7 @@ socket.on('current-situation',(situ)=>{
 })
 
 socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
+    c.globalAlpha=1
     //console.log("q:",rooms.NameOfroom)
     c.clearRect(0,0, canvas.width, canvas.height)
    // countUpdate(rooms[roomName].temps)
@@ -164,6 +165,12 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         //console.log("tt",player.gotshot,player.gotshot2, player.socketID)
     //if player.invisi==false and player.socketID==
     if(player.invisi==false||player.socketID==socket.id){
+       if(player.invisi==true){
+        c.globalAlpha=0.3
+       }else{
+        c.globalAlpha=1
+       }
+
        if(!player.ahhh){
         if(player.gunRight){
             c.drawImage(image2,player.positionx, player.positiony, player.width, player.height)
