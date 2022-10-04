@@ -208,7 +208,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
            c.fillStyle ='#ffffff'//'white'
         }
         
-        
+        c.globalAlpha=1
         c.fillText(player.playername, player.positionx, player.positiony - 40);
         if((rooms.hiroba==true||rooms.incount==true)&&player.ready==true){
         c.fillStyle='#ff0000'    
@@ -216,6 +216,7 @@ socket.on('state', (rooms, platforms/*,beams*/ /*hpbars*/)=>{
         }
 
         if(player.invisi==true){
+            
         c.fillStyle='#ff0000'
         c.fillText("Invisible", player.positionx, player.positiony - 55); 
         }
