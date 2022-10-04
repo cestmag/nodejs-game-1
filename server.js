@@ -729,7 +729,9 @@ class DeadMonkey{
 
        if(afterlike.length>0){
           for(let i=0; i<afterlike.length; i++){
+            if(afterlike[i].invisibleNow==false){
               afterlike[i].getDamaged(this.power)
+          }
           }
           this.remove()
        }
