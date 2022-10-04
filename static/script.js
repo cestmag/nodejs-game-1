@@ -1,4 +1,4 @@
-const socket=io('http://localhost:3000') // io('https://boxersintheuniverse.herokuapp.com')//io('http://localhost:3000')
+const socket=io('https://boxersintheuniverse.herokuapp.com') // io('https://boxersintheuniverse.herokuapp.com')//io('http://localhost:3000')
 
 const playername=prompt("put player name")
 //const playername="asshole"
