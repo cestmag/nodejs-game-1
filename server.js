@@ -30,7 +30,7 @@ const rooms={/*name:{}*/}
 
 app.get('/',(req, res)=>{
     var message=req.query.error
-    console.log("errror",message)
+   // console.log("errror",message)
     if(message==undefined){
     res.render('departure.ejs',{message:"Welcome to the game, mother fucker"})
     }else if(message==0){
@@ -1523,7 +1523,7 @@ setInterval(() => {
         if(room.deletee==true){
             //console.log('deletee by moi',rooms[room.NameOfroom])
             io.to(room.NameOfroom).emit('room-delete') 
-            
+
            // if(Object.values(room.players).length>=1){
                // io.to(room.NameOfroom).emit('room-delete') 
                 Object.values(room.players).forEach(player=>{
