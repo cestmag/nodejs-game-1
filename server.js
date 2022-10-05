@@ -1442,9 +1442,9 @@ io.on('connection', (socket)=>{//function(socket){}
         delete rooms[player.inRoom].rest[player.id]; 
         }
 
-      /*  if(Object.values(rooms[player.inRoom].players).length+Object.values(rooms[player.inRoom].rest).length==0){//if there's no one
+       if(Object.values(rooms[player.inRoom].players).length+Object.values(rooms[player.inRoom].rest).length==0){//if there's no one
              rooms[player.inRoom].deletee=true
-        }*/
+        }
     }
         //rooms[player.inRoom].rest[player.id]=player
        // console.log("bye",player.playername, rooms[player.inRoom].end)
@@ -1522,14 +1522,14 @@ setInterval(() => {
 
         if(room.deletee==true){
             //console.log('deletee by moi',rooms[room.NameOfroom])
-            io.to(room.NameOfroom).emit('room-delete') 
+           // io.to(room.NameOfroom).emit('room-delete') 
 
-           // if(Object.values(room.players).length>=1){
-               // io.to(room.NameOfroom).emit('room-delete') 
+          if(Object.values(room.players).length>=1){
+                io.to(room.NameOfroom).emit('room-delete') 
                 Object.values(room.players).forEach(player=>{
                     player=null
                 })
-           // }
+            }
 
           /*  Object.values(platforms).forEach(platform=>{
                 delete platforms[platform.id] 
