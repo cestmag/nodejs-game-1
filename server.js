@@ -1,3 +1,4 @@
+const { Console } = require('console')
 const express = require('express')//server end ctrl+c
 //const { platform } = require('os')
 const app= express()
@@ -24,9 +25,15 @@ app.use('/static', express.static(__dirname + '/static'));
 app.use(express.urlencoded({extended: true}))
 
 //var timer=180
+const temporarilyCamp={}
+const lobby={}
+const entrances={}
 const rooms={/*name:{}*/}
+const itiziazukarizyo={}
+
 //when a room is created, add the room to the imagina array rooms
 //rooms[the random room name]={players:{}}
+//end hiroba onway realend
 
 app.get('/',(req, res)=>{
     var message=req.query.error
@@ -46,38 +53,40 @@ app.post('/room',(req, res)=>{
     randomLetters=""
 
     do{
-    for(let i=0; i<20; i++){
+    for(let i=0; i<20; i++){//20桁
         var x = Math.floor(Math.random() * mojis.length);//0~mojis.length-1までの整数
         randomLetters+=mojis.charAt(x)
     }
-    }while(rooms[randomLetters]!=null)
+    }while(entrances[randomLetters]!=null&&rooms[randomLetters]!=null)
     //console.log("heyyy")
-    rooms[randomLetters]={
+    //make an array instead of rooms 
+    //entrances
+    temporarilyCamp[randomLetters]={heyanoNamae:randomLetters, members:{},/*page undefinedになったらストップウォッチを作動させ、undefinedでなくなったら0に戻す。5秒を超えたらホームページを離れたとみなし自滅する */}
+
+    lobby[randomLetters]={lobbyName:randomLetters, members:{}, chatcontent:[]}
+    entrances[randomLetters]={
         NameOfroom:randomLetters,
-        during:false, 
-        end:false ,
+        during:false, //カウント後試合中
+        end:false ,//試合後
+        leaveRoom:false,
         players:{}, 
-        result:[], result2:[],
+        result:[], result2:[], /*members:[],*/
         zikan:function(set,ver){
         //console.log("ah",set)
         let targ=this.NameOfroom
         let timer=set
-       
+       // console.log("rooms: ",rooms, "targ :",targ, "t f",rooms[targ])
         function decreaseTimer(){
+            if(rooms[targ]==null){
+               // console.log("nooooaahh", timer)
+                return 
+            }
+            if(rooms[targ].leaveRoom==true&&ver==1){
+                return
+            }
             
             if(timer>=0){
-
-                if(rooms[targ].onway==true){//!!!!!!!!!error undefined 
-                    rooms[targ].realend==true
-                    return
-                }
-                if(rooms[targ].end==true&&ver==1){// 試合後outtahereの時 playerがrestがいない場合(でplayersにいる場合)はエラーにならず、otherwise error
-                    return
-                }
             
-                if(rooms[targ].hiroba==true&&ver==2){
-                    return
-                }
                if(timer==matchLen&&ver==1){
                     //試合開始
                     rooms[targ].incount=false
@@ -102,8 +111,12 @@ app.post('/room',(req, res)=>{
                     invisiblea=new InvisibleCloak(RandomNum(100,930,1)[0],targ)//出現座標指定 x座標80から950
                     rooms[targ].invisible[invisiblea.id]=invisiblea
                 }
-                
+                if(ver==2){
+                    console.log("q:",rooms[targ].temps)
+                }
                 rooms[targ].temps=timer
+
+           
                 timer--
                 
                 setTimeout(decreaseTimer, 1000)
@@ -111,7 +124,9 @@ app.post('/room',(req, res)=>{
             }else{
                 switch(ver){
                     case 1:
-                        rooms[targ].end=true
+                        //roomsからentranceへ移動
+                     //   rooms[targ].end=true
+
                         rooms[targ].during=false
                         //let zyun=[[0]]
                         //let max=0
@@ -121,7 +136,7 @@ app.post('/room',(req, res)=>{
                             let atai=player.hp
                             
                             let placeToPut=0
-                            let same=false
+                           
                             let howmany=0
 
                             for(let i=0;i<rooms[targ].result2.length;i++){
@@ -143,14 +158,20 @@ app.post('/room',(req, res)=>{
                         let kari=rooms[targ].result
                         rooms[targ].result=rooms[targ].result2.concat(kari)
                         io.to(targ).emit('end',{result:rooms[targ].result})
-                        console.log('t',rooms[targ].result)
+                        rooms[targ].leaveRoom=true
+                     /*   entrances[targ]=rooms[targ]
+                        delete rooms[targ]*/
+                       // console.log('t',rooms[targ].result)
                     break
 
-                    case 2:
+                  case 2:
                         //room deleted
-                        console.log("delete")
-                        rooms[targ].deletee=true
-                    break
+                       // console.log("delete")
+                       // rooms[targ].deletee=true
+                       rooms[targ].end=true
+                       //reset(targ)
+                      // io.to(targ).emit('room-delete',targ)
+                  break
 
 
                 }
@@ -166,9 +187,9 @@ app.post('/room',(req, res)=>{
     temps:undefined,
     timeOn:false, 
     timeOn2:false,
-    deletee:false,
-    incount:false,
-    hiroba:true,
+    deletee:false,//部屋消滅
+    incount:false,//試合前　カウント
+    /*hiroba:true,*/     //試合前
     letsgo:false,
     hpplusTime:[],//hpplusが落とされるランダムな時間が入る、5つ　90sec以上
     beamPlusTime:[],//enemy ga syutugen suru toki
@@ -177,38 +198,85 @@ app.post('/room',(req, res)=>{
     buls:{},//enemy
     rest:{},//losers
     invisible:{},//invisible cloak 
-    onway:false,
-    realend:false,
-    connect:false}//結果箱 
+    /*onway:false,*/
+    /*realend:false,*/
+    /*connect:false,*/
+    }//結果箱 
     //console.log("hey",randomLetters," ", rooms)
     res.redirect(randomLetters)
 
 })
 
+app.post('/arena',(req,res)=>{
+    console.log("getcha")
+    
+})
+
 app.get('/:room',(req, res)=>{
-  if(rooms[req.params.room]==null){//そして試合中であったら入れないようにする。
+  if(rooms[req.params.room]==null&&entrances[req.params.room]==null){//存在しない
        //return res.redirect('/?error='+"theRoomNotExist")//query
        return res.redirect(url.format({
         pathname:"/",
         query:{"error":0}
        }))
     }
-   if(rooms[req.params.room].during==true||rooms[req.params.room].incount==true||rooms[req.params.room].end==true){//sould
+   if(rooms[req.params.room]!=null&&entrances[req.params.room]==null/*.during==true||rooms[req.params.room].incount==true||rooms[req.params.room].end==true*/){//sould
         return res.redirect(url.format({
             pathname:"/",
             query:{"error":1}
            }))
     }
     //console.log("attention",rooms)
-    res.render('mainpage.ejs', {roomName: req.params.room})//mainpage.ejs
+    if(req.query.id&&temporarilyCamp[req.params.room].members[req.query.id]){
+        //req.query.nameがlobby内になければ初めの名前設定からにする
+        //req.query.nameがlobby内にあっても人数がおかしかったら初めの名前設定にする。
+        //console.log("req",req.query.name)
+        let onam=temporarilyCamp[req.params.room].members[req.query.id].name
+        let typ=temporarilyCamp[req.params.room].members[req.query.id].type
+      //  let themessage="back from the arena"
+      //  console.log("vogue")
+        //idと名前、typeが見もづけられてるからqueryのidからname, type wo okuru
+      //  lobby[req.params.room].chatcontent.push([onam, themessage,req.query.id ])
+      //  io.to('pre'+req.params.room).emit('get-message',{who:onam, content:themessage, id:req.query.id})
+    res.render('mainpage.ejs', {roomName: req.params.room, back:0, who:onam,type:typ, id:req.query.id})//mainpage.ejs
+    }else{
+       // console.log("ay")
+    
+    res.render('mainpage.ejs', {roomName: req.params.room, back:1, who:null, type:null, id:null})   
+    }
+})
+
+app.get('/:room/arena',(req,res)=>{//query ni id 何度かいききしたのちに試合開始すると、lobbyに戻ってしまう。
+  //試合中だったら観客になるか、ロビーで待機か
+  if(req.query.id&&temporarilyCamp[req.params.room].members[req.query.id]){
+  let onam=temporarilyCamp[req.params.room].members[req.query.id].name
+  let typ=temporarilyCamp[req.params.room].members[req.query.id].type
+ // let themessage="entered the arena"
+ // lobby[req.params.room].chatcontent.push([onam, themessage,req.query.id ])
+ // io.to('pre'+req.params.room).emit('get-message',{who:onam, content:themessage, id:req.query.id})//who:val.who, content:val.message, id:val.id
+  res.render('match.ejs',{playerr:onam, typee:typ, roomName: req.params.room, id:req.query.id})
+  }else{
+     res.redirect('/'+req.params.room)
+    //res.redirect(req.params.room)
+  }
+  // console.log("huh: ",req.query.name)
 })
 
 //server.listen(process.env.PORT||3000)
 
 //const players=[]
+class Preplayer{
+    constructor(name, type, room, socketID,id){
+        this.id=id
+        this.name=name
+        this.type=type
+        this.room=room
+        this.socketID=socketID
+    }
+}
 
 class Player{//巨大化したりする
-    constructor(num, roomName, playername, socketID){
+    constructor(num, roomName, playername, socketID, thetype,id){
         this.position={
            x:200*num,
            y:100
@@ -219,14 +287,17 @@ class Player{//巨大化したりする
            y:0
         }
         this.width =30
-        this.height=30   
+        this.height=30  
+        
+        this.beamhaba=5
+        this.beamnagasa=30
 
         this.hpMax=playerHpMAx
         this.hp=this.hpMax
 
         //this.notup=false
 
-        this.id=Math.floor(Math.random()*1000000000);
+        this.id=id
 
         this.movement = {}
 
@@ -246,7 +317,7 @@ class Player{//巨大化したりする
 
         this.ExbeamCount=0
 
-        this.attackPower=5
+        this.attackPower=10
 
         this.playername=playername;
 
@@ -260,7 +331,7 @@ class Player{//巨大化したりする
 
         this.bvelocity=19;
         
-        this.punc=false;
+        this.punc=false;//punch
 
         this.die=false;
 
@@ -269,6 +340,10 @@ class Player{//巨大化したりする
         this.onfloor=false;
 
         this.onPlayer=false;
+
+        this.killmonsters=0;
+
+        this.level=1;
 
       //-----change the photo to show when attacked
         this.gotshot=0;
@@ -284,6 +359,10 @@ class Player{//巨大化したりする
         this.invisibleTime=0
 
         this.invisibleDuration=500
+
+        this.noo=false
+
+        this.type=thetype
         //this.attackNow=false
         //this.whyy={1:'a',2:'b',3:'c'}
         //this.beam = null //new Beam()//player has a beam
@@ -400,12 +479,52 @@ class Player{//巨大化したりする
                 this.invisibleTime=0
             }
         }
+
+        if(this.position.y>526/*&&this.noo==false*/){
+            this.getDamaged(1,false)
+           // this.noo=true
+        }/*else if(this.noo==true){
+           this.noo=false
+        }*/
     }
 
-    getDamaged(damage){
+    // if(!afterlike[i].killmonsters){//if it's a deadmonkey
+   // this.killmonsters+=1
+//}
+
+    levelUp(numArray){//array
+        //lv.1 10 lv.2 30 lv.3 60 attaclPower
+        switch(numArray){
+            case 10:
+              this.level=2
+              
+              //this.beamnagasa=50
+             // this.attackPower=10
+            return
+            case 25:
+              this.level=3
+             
+             // this.beamnagasa=80
+             // this.attackPower=15
+            return
+            case 35:
+              this.level=4
+              
+             // this.beamnagasa=120
+             // this.attackPower=20
+            return
+        }
+           
+        
+       
+     }
+
+    getDamaged(damage,version){
         //console.log("getdamaged", this.playername)
+        if(version==true){
         this.gotshot+=1
-     if(rooms[this.inRoom].during==true||rooms[this.inRoom].hiroba==true){
+        }
+     if(rooms[this.inRoom].during==true/*||rooms[this.inRoom].hiroba==true*/){
        this.hp -=damage
        if(this.hp<=0&&rooms[this.inRoom].during==true){
          this.remove()
@@ -437,13 +556,13 @@ class Player{//巨大化したりする
     punch(){
        let tekiteki=this.conflictWithPlayers()
        for(let i=0; i<tekiteki.length; i++){
-        tekiteki[i].getDamaged(this.attackPower)
+        tekiteki[i].getDamaged(this.attackPower,true)
        }
        
     }
 
     shoot(posix, posiy, which){
-       if(rooms[this.inRoom].during==true||rooms[this.inRoom].hiroba==true){
+       if(rooms[this.inRoom].during==true/*||rooms[this.inRoom].hiroba==true*/){
        this.shootRemain--
        if(this.shootRemain<=0&&rooms[this.inRoom].during==false){
         this.shootRemain=this.beamMax
@@ -564,7 +683,7 @@ class Player{//巨大化したりする
         return { id:this.id, positionx: this.position.x, positiony: this.position.y, width:this.width, height:this.height,
             beamclub: this.beamclub, hp:this.hp, hpMax:this.hpMax, shootRemain:this.shootRemain, beamMax:this.beamMax, gunLeft:this.gun.left,
             gunRight:this.gun.right, playername:this.playername, ready:this.ready,socketID:this.socketID,punc:this.punc, die:this.die,ahhh:this.ahhh,
-            invisi:this.invisibleNow,
+            invisi:this.invisibleNow, type: this.type, killmonsters:this.killmonsters, level:this.level, beamhaba:this.beamhaba
      }
     }
 
@@ -583,14 +702,21 @@ class Player{//巨大化したりする
             Object.values(rooms[this.inRoom].players).forEach(player=>{
                 //winner=player
                 io.to(this.inRoom).emit('win',{who:player.playername, sid:player.socketID})
+                console.log("you won")
                 rooms[this.inRoom].result.unshift([player.socketID,player.playername, undefined,0])
                 player.ready=false
             })
-            rooms[this.inRoom].end=true
+            //entranceからroomsへ移動!!!!!!!!!
+           // rooms[this.inRoom].end=true
             rooms[this.inRoom].during=false
+            //ストップウォッチ終了
+            rooms[this.inRoom].leaveRoom=true
             io.to(this.inRoom).emit('end',{result:rooms[this.inRoom].result})
+
+         /*   entrances[this.inRoom]=rooms[this.inRoom]
+            delete rooms[this.inRoom]*/
             //io.to(this.inRoom).emit('win',{who:winner.playername, sid:winner.socketID})
-            //console.log("end")
+            console.log("end")
            //this=null
         }
     }
@@ -602,6 +728,7 @@ class Player{//巨大化したりする
     }
 
 }
+
 
 class Platform{
     constructor(posix, posiy, whatwidth, whatheight){
@@ -667,7 +794,7 @@ class DeadMonkey{
         this.inRoom=room;
         this.position={
             x:xStart,
-            y:100
+            y:10
          }
 
          this.velocity={
@@ -725,15 +852,16 @@ class DeadMonkey{
             this.landed=true
            }
        }
-       let afterlike=this.judgementBeam() //letは同じブロック内からしか呼べない、varはどこからでも呼び出せる
+       let afterlike=this.judgementBeam() //   letは同じブロック内からしか呼べない、varはどこからでも呼び出せる
 
        if(afterlike.length>0){
           for(let i=0; i<afterlike.length; i++){
             if(afterlike[i].invisibleNow==false){
-              afterlike[i].getDamaged(this.power)
+              afterlike[i].getDamaged(this.power,true)
+              this.remove()
           }
           }
-          this.remove()
+         
        }
     //letは同じブロック内からしか呼べない、varはどこからでも呼び出せる
       if(this.landed==true){
@@ -773,10 +901,12 @@ class DeadMonkey{
         }
     }
 
-    getDamaged(damage){
+    getDamaged(damage,version){
         //console.log("getdamaged", this.playername)
+        if(version==true){
         this.gotshot+=1
-     if(rooms[this.inRoom].during==true||rooms[this.inRoom].hiroba==true){
+        }
+     if(rooms[this.inRoom].during==true/*||rooms[this.inRoom].hiroba==true*/){
        this.hp -=damage
        if(this.hp<=0&&rooms[this.inRoom].during==true){
          this.remove()
@@ -874,7 +1004,7 @@ class HpPlus{
         this.inRoom=room;
         this.position={
             x:xStart,
-            y:100
+            y:10
          }
 
          this.velocity={
@@ -890,7 +1020,9 @@ class HpPlus{
 
          this.duration=300
 
-        // this.effect=new HpplusEffect()
+         this.effect=null
+
+         this.finish=false
           
     }
     update(){
@@ -909,21 +1041,23 @@ class HpPlus{
        if(afterlike.length>0){
 
           for(let i=0; i<afterlike.length; i++){
-            if(afterlike[i].invisibleNow==false){
+            if(afterlike[i].invisibleNow==false&&this.finish==false){
               afterlike[i].getHp(this.power)
+              this.finish=true
+              this.effect=new Effect(this.position.x, this.position.y, this.width,this)
             }
               //ここでeffect this.eff=null, this.eff= new HpplusEffect()
           }
-          this.remove()
+          //this.remove()
           return
        }
      
          this.position.x+=this.velocity.x
          this.position.y+=this.velocity.y
 
-         if(this.count>this.duration){
+         if(this.count>this.duration&&this.finish==false){
             this.remove()
-            this.effect=null
+            //this.effect=null
             return
          }
 
@@ -947,6 +1081,10 @@ class HpPlus{
         &&this.position.y+this.height/2<=obj.position.y-this.height/2+obj.height 
         &&obj.position.x-this.width/2<=this.position.x+this.width/2 
         &&this.position.x+this.width/2<=obj.position.x+this.width/2+obj.width
+    }
+    bye(){
+       this.effect=null 
+       this.remove()
     }
 
     newJudge(obj){//extends
@@ -996,6 +1134,7 @@ class HpPlus{
 
     toJSON(){
         return { id:this.id, positionx: this.position.x, positiony: this.position.y, width:this.width, height:this.height,
+            effect:this.effect, finish:this.finish
             
      }
 
@@ -1023,9 +1162,11 @@ class InvisibleCloak extends HpPlus{
    if(afterlike.length>0){
 
       for(let i=0; i<afterlike.length; i++){
-        if(afterlike[i].invisibleNow==false){
+        if(afterlike[i].invisibleNow==false&&this.finish==false){
           afterlike[i].beInvisible()
-          this.remove()
+          this.finish=true
+          this.effect=new Effect(this.position.x, this.position.y, this.width,this)
+         // this.remove()
           break
       }
           //ここでeffect this.eff=null, this.eff= new HpplusEffect()
@@ -1038,7 +1179,7 @@ class InvisibleCloak extends HpPlus{
      this.position.x+=this.velocity.x
      this.position.y+=this.velocity.y
 
-     if(this.count>this.duration){//when to be removed
+     if(this.count>this.duration&&this.finish==false){//when to be removed
         this.remove()
         return
      }
@@ -1050,12 +1191,39 @@ class InvisibleCloak extends HpPlus{
  }
 }
 
-class HpplusEffect{
-    constructor(){
+class Effect{
+    constructor(fx,fy,wid,obj){
+      this.position={
+        x:fx+wid/2,
+        y:fy
+      }
+
+      this.velocity={
+        x:0,
+        y:4
+      }
+       
+      this.duration=20
+
+      this.count=0
+
+      this.owner=obj
+
+      //this.content=""
 
     }
     update(){
-
+      this.position.y-=this.velocity.y
+      //x unchanged
+      this.count+=1
+      if(this.count>this.duration){
+        this.owner.bye()
+      }
+    }
+    
+    toJSON(){
+        return { /*id:this.id,*/ positionx: this.position.x, positiony: this.position.y, /*width:this.width, height:this.height,*/
+     }
     }
 }
 
@@ -1092,8 +1260,8 @@ class Beam{
 
 
 
-        this.width=30
-        this.height=5
+        this.width=obj.beamnagasa
+        this.height=obj.beamhaba
         this.finalX;
         this.finalY;
         this.LazerLen=100
@@ -1104,7 +1272,7 @@ class Beam{
         this.speed=15
         //this.which=0;
         this.id=Math.floor(Math.random()*100000000);
-        this.power=10
+        this.power=obj.attackPower
        // this.bullets;
         this.bulletsMax;
         this.hitbeam=0
@@ -1117,7 +1285,12 @@ class Beam{
             this.velocity.y=-this.velocity.y*1.2
            }
         //this.velocity.x=(this.owner.hp/this.owner.hpMax)*this.velocity.x
-        this.position.x += this.velocity.x*this.which
+        if(this.owner.level==1){
+            this.position.x += this.velocity.x*this.which
+        }else{
+            this.position.x += (this.velocity.x+2*this.count)*this.which//level4になるとnazeka当たっていなくても当たり判定になる。?????????!!!!!!!
+        }
+        //lv 2以上だと加速するようにする
         this.position.y +=this.velocity.y
         //this.draw()
         this.count++
@@ -1137,12 +1310,17 @@ class Beam{
 
        if(afterlike.length>0){
           for(let i=0; i<afterlike.length; i++){
-              afterlike[i].getDamaged(this.power)
+              afterlike[i].getDamaged(this.power,true)
+              if(!afterlike[i].killmonsters){//if it's a deadmonkey
+                this.owner.killmonsters+=1
+                this.owner.levelUp(this.owner.killmonsters)
+
+              }
           }
           this.remove()
        }
        //console.log("lp",this.count)
-        if(this.count>=100){//ここで持続時間きまる
+        if(this.count>=this.LazerLen){//ここで持続時間きまる
           this.remove()
           //this.count=0
           //this.velocity.y=0
@@ -1223,6 +1401,9 @@ class Beam{
             /*&& (this.position.x>obj.position.x|| obj.position.x>this.position.x+this.width
                 ||this.position.y>obj.position.y+obj.height||obj.position.y+obj.height>this.position.y+this.height)*/)
     }
+    between(){
+        
+    }
    
 
     judgementBeam(){
@@ -1284,21 +1465,147 @@ platforms[plat4.id]=plat4
 platforms[plat5.id]=plat5
 
 io.on('connection', (socket)=>{//function(socket){}
-    
-    let player = null;
-    socket.on('online', (room, name) => {
+    let preplayer=null //ohogehrohgirego
+    let player=null
+    socket.on('preonline',val=>{//パソコンスリープ状態になるとどうなる arenaで左上の戻るボタンを押し,lobbyに戻るとpreplayer=nullになる
+        //何かアクションが起こった時に、lobbyとtemporalliticampを見比べていないpreplayerを発見する
+        console.log("now:",temporarilyCamp[val.heya].members)
+        //console.log("namae:",val.nam)
+        //ここでlobby[val.heya].members[socket.id]の中でval.namが既にあるか確認かつ?nameがあるかundefinedか
+        //console.log("val:",socket.id)
+        //val.name
+        //if(theID doesnt exist)
+        //valには部屋とidが送られてくる
+        console.log("accsessed...preonline")
+        let theID=null
+        if(val.id&&temporarilyCamp[val.heya].members[val.id]){//idがあり、既存のに一致している場合
+         theID=val.id
+         temporarilyCamp[val.heya].members[val.id].socketid=socket.id
+         temporarilyCamp[val.heya].members[val.id].page=1
+         //新しいsocket.idとidをひもづける
+        }else{
+            //newid
+        theID=Math.floor(Math.random()*1000000000);
+        io.to(socket.id).emit('idRegister',theID)
+        temporarilyCamp[val.heya].members[theID]={id:theID, name:null, room:val.heya,type:null, socketid:socket.id, page:1,time:0,watch:function(){
+            let time=0
+            let heyay=this.room
+            let sonoID=this.id
+
+            function stopwatch(){
+               time++
+               temporarilyCamp[heyay].members[sonoID].time=time
+               if(time>5){//何秒いなかったらプラットフォームから去ったと判断するか
+                //delete temporarilyCamp[heyay].members[sonoID]
+                  console.log("leave")
+                  delete temporarilyCamp[heyay].members[sonoID]
+                  //ここでもし部屋に誰もいなくなったらトーク履歴も消したい
+                 if(Object.values(temporarilyCamp[heyay].members).length==0){
+                    console.log("lobby: ",lobby[heyay].chatcontent)
+                   lobby[heyay].chatcontent.length=0
+                  }
+                  return //id削除
+               }
+               if(temporarilyCamp[heyay].members[sonoID].page){
+                  console.log("not leave ")
+                　return //ただぬけるだけ
+               }
+               setTimeout(stopwatch, 1000)
+          }    
+
+          stopwatch()
+          return
+         
+        
+          
+        }/*valuable to identify which page the user is looking at */}
+        }
+        console.log("preonline:", val.name)
+
+        let onamae=temporarilyCamp[val.heya].members[theID].name
+        let taipu=temporarilyCamp[val.heya].members[theID].type
+        
+        let eachroom='pre'+val.heya
+        socket.join(eachroom)
+        preplayer= new Preplayer(onamae, taipu, val.heya, socket.id, theID)
+        lobby[val.heya].members[socket.id]= preplayer
+        //lobby[val.heya].members[socket.id]={name:val.nam, type:val.taipu, heya:val.heya}//.push([val.nam, val.taipu])
+        console.log("lobby",lobby)
+        if(rooms[preplayer.room]){
+        io.to(eachroom).emit('current-situation', {lobby:lobby[val.heya].members, entrances:entrances[val.heya].players, rooms:rooms[preplayer.room].players} )
+        }else{
+        io.to(eachroom).emit('current-situation', {lobby:lobby[val.heya].members, entrances:entrances[val.heya].players} )   
+        }
+        io.to(socket.id).emit('chat-content', lobby[val.heya].chatcontent)
+    })
+    socket.on('reload',val=>{
+        console.log("reload:",val.room, val.id)
+    })
+    socket.on('send-message',val=>{
+        //lobbyのchatcontentに保存する
+        lobby[val.room].chatcontent.push([val.who, val.message, val.id])
+        io.to('pre'+val.room).emit('get-message',{who:val.who, content:val.message, id:val.id})
+    })
+    socket.on('settings',val=>{
+        if(!preplayer){
+            console.log("somthing is strange...")
+            return
+        }
+        preplayer.name=val.nam
+        preplayer.type=val.taipu
+        //ここでmember情報更新
+        //preplayer.room
+        
+        //idと新しいtype, 名前をひもづける
+        temporarilyCamp[preplayer.room].members[preplayer.id].name=preplayer.name
+        temporarilyCamp[preplayer.room].members[preplayer.id].type=preplayer.type
+
+        if(rooms[preplayer.room]&&!entrances[preplayer.room]){
+            io.to('pre'+preplayer.room).emit('current-situation', {lobby:lobby[val.heya].members, rooms:rooms[preplayer.room].players} )
+            }else if(!rooms[preplayer.room]&&entrances[preplayer.room]){
+            io.to('pre'+preplayer.room).emit('current-situation', {lobby:lobby[val.heya].members, entrances:entrances[val.heya].players} )   
+            }else if(rooms[preplayer.room]&&entrances[preplayer.room]){
+            io.to('pre'+preplayer.room).emit('current-situation', {lobby:lobby[val.heya].members, entrances:entrances[val.heya].players,rooms:rooms[preplayer.room].players} )      
+            }/*else{
+            io.to('pre'+preplayer.room).emit('current-situation', {lobby:lobby[val.heya].members} )
+            }*/
+        //console.log("yooo")
+    })
+
+    socket.on('online', (room, id) => {//name thetypeイラン
        // console.log("current situation: ", rooms)
        /* if(rooms[room].connect==false){
         rooms[room].connect=true
     }*/
         //totalPlayers+=1
         //console.log("hello "+socket.id)
+      /*  if(!temporarilyCamp[room].members[id]){
+            console.log('error back to lobby')
+            return
+        }*/
+        if(!temporarilyCamp[room].members[id]){
+            console.log("arena player not exist...")
+            return
+        }
+        temporarilyCamp[room].members[id].socketid=socket.id
+        temporarilyCamp[room].members[id].page=2
         socket.join(room)
+        let namy=temporarilyCamp[room].members[id].name
+        let typy=temporarilyCamp[room].members[id].type
         //console.log("moving...")
-        let lenOfpl=Object.values(rooms[room].players).length//errorrrrr!!!!!!!!!!!!!!!!!! undefined
-        player = new Player(lenOfpl+1, room, name, socket.id);
+        var lenOfpl=Object.values(entrances[room].players).length//errorrrrr!!!!!!!!!!!!!!!!!! undefined
+        player = new Player(lenOfpl+1, room, namy, socket.id, typy,id);
         //player.socketID=socket.id
-        rooms[room].players[player.id] = player;//socket.id
+        entrances[room].players[player.id] = player;//socket.id
+        if(rooms[room]){
+        io.to('pre'+room).emit('current-situation', {lobby:lobby[room].members, entrances:entrances[room].players, rooms:rooms[room].players} )
+        io.to(room).emit('current',{entrances:entrances[room].players, rooms:rooms[room].players})
+        }else{
+        io.to('pre'+room).emit('current-situation', {lobby:lobby[room].members, entrances:entrances[room].players} )  
+        io.to(room).emit('current',{entrances:entrances[room].players})
+        }
+        //entrances[room].members.push()
+
         //io.to(player.socketID).emit('send-link')
         //player.playername=name
         //player.inRoom=room
@@ -1311,15 +1618,17 @@ io.on('connection', (socket)=>{//function(socket){}
         //console.log("rooms",rooms)
 
         //console.log("total players",Object.keys(players).length)
-       io.to(player.socketID).emit('current-situation',rooms)
+       // io.to(room).emit('joined',{who:player.playername})
+      // io.to(player.socketID).emit('current-situation',rooms)
     });
 
     socket.on('start-ready', config=>{
         if(!player){return;}
         player.ready=true 
+        io.to(config).emit('current', {entrances: entrances[player.inRoom].players})
         let NumOfplayer=0;
         //playerが属している部屋の全員がready=trueが確認 そうならemit game-start
-        let startOk=Object.values(rooms[player.inRoom].players).every(player=>{//every() some()
+        let startOk=Object.values(entrances[player.inRoom].players).every(player=>{//every() some()
             NumOfplayer++
              if(player.ready==true){
                 return true
@@ -1329,8 +1638,9 @@ io.on('connection', (socket)=>{//function(socket){}
         if(startOk&&NumOfplayer>1){
             //console.log("hype boy", rooms[player.inRoom].during)
             //rooms[player.inRoom].during=true
-            //
-            rooms[player.inRoom].hiroba=false
+            //change the array entrance to rooms
+              changeArray(0,player.inRoom)
+           // rooms[player.inRoom].hiroba=false
             rooms[player.inRoom].incount=true
             Object.values(rooms[player.inRoom].players).forEach(each=>{
                 each.hp=each.hpMax
@@ -1340,10 +1650,13 @@ io.on('connection', (socket)=>{//function(socket){}
             rooms[player.inRoom].hpplusTime=RandomNum(10,90,8)//170以上179以下 8ko
             rooms[player.inRoom].beamPlusTime=RandomNum(10,160,15)// 10ko
             rooms[player.inRoom].invisibleTime=RandomNum(30, 180,10)
+             io.to('pre'+config).emit('current-situation', {lobby:lobby[config].members, rooms:rooms[config].players})
+             // io.to('pre'+room).emit('current-situation', {lobby:lobby[room].members, entrances:entrances[room].players} )  
              io.to(config).emit('game-start-soon')
             //io.to(config).emit('game-start')
             //console.log(rooms)
             //emit('game-start'), send this to all the players in the same room
+            return
         }else if(startOk&&NumOfplayer<=1){
             //console.log("stop",player.socketID) 
            // io.sockets.socket(player.socketID).emit('please-wait',{message:"Waiting for other players to join..."});
@@ -1403,12 +1716,24 @@ io.on('connection', (socket)=>{//function(socket){}
     socket.on('attack', config=>{//attckEndと一つにまとめられる
         //give damage to enemies
         if(!player){return;}
-        player.punc=true
-        player.punch()
+        //player.punc=true
+        //player.punch()
     })
     socket.on('attackEnd',val=>{
         if(!player){return;}
        player.punc=false
+    })
+
+    socket.on('decided',val=>{
+        if(!preplayer){return;}
+        preplayer.type=val
+        temporarilyCamp[preplayer.room].members[preplayer.id].type=val
+        
+    })
+
+    socket.on('rename',val=>{
+        if(!player){return;}
+        player.playername=val
     })
 
     /*socket.on('send-message', val=>{
@@ -1416,23 +1741,37 @@ io.on('connection', (socket)=>{//function(socket){}
         io.to(player.inRoom).emit('hey',{content:val, who:player.playername, id:player.socketID})
     })*/
     socket.on('disconnect', () => {
-        if(!player){return;}
-     /*   if(rooms[player.inRoom].during==true){
-           //試合終了
-           rooms[player.inRoom].result.unshift([player.socketID, player.playername])
-           if(Object.values(rooms[player.inRoom].players).length==2){
-            let oliv=player.inRoom
-            delete rooms[oliv].players[player.id];
-            rooms[oliv].during=false
-            rooms[oliv].end=true
-           }
-           
-        }else{
-           
-        }*/
-        //delete rooms[player.inRoom].players[player.id];
-        //console.log("bye",player.playername, rooms[player.inRoom].end)
-        //これが原因: 
+       // console.log('disconnect:', val.root)
+        if(!player&&!preplayer){
+            console.log("no player and no preplayer disconnected...")
+            //lobby[val.heya].members.splice()
+            
+            return
+        }
+        if(preplayer){
+            delete lobby[preplayer.room].members[preplayer.socketID]
+            //console.log("room disconnected...")
+           // io.to('pre'+preplayer.room).emit('current-situation',{lobby:lobby[preplayer.room].members, entrances:entrances[preplayer.room].players, rooms:rooms[preplayer.room].players})
+           if(rooms[preplayer.room]&&!entrances[preplayer.room]){//rooms[]
+            io.to('pre'+preplayer.room).emit('current-situation', {lobby:lobby[preplayer.room].members, /*entrances:entrances[preplayer.room].players,*/ rooms:rooms[preplayer.room].players} )
+            }else if(entrances[preplayer.room]&&!rooms[preplayer.room]){
+          //  console.log("here:", lobby[preplayer.room].members)
+            io.to('pre'+preplayer.room).emit('current-situation', {lobby:lobby[preplayer.room].members, entrances:entrances[preplayer.room].players} )   
+            }else if(rooms[preplayer.room]&&entrances[preplayer.room]){
+            io.to('pre'+preplayer.room).emit('current-situation', {lobby:lobby[preplayer.room].members, entrances:entrances[preplayer.room].players,rooms:rooms[preplayer.room].players} )     
+            }/*else{
+            io.to('pre'+preplayer.room).emit('current-situation', {lobby:lobby[preplayer.room].members} )     
+            }*/
+         //   temporarilyCamp[preplayer.room].members[preplayer.name]={type:preplayer.type}
+
+            //if there is no one in the room, delete the temporarilyCamp
+            temporarilyCamp[preplayer.room].members[preplayer.id].page=undefined
+            temporarilyCamp[preplayer.room].members[preplayer.id].watch()
+            preplayer=null
+            
+            return
+        }
+   
       if(rooms[player.inRoom]){
         
       
@@ -1443,14 +1782,41 @@ io.on('connection', (socket)=>{//function(socket){}
         }
 
        if(Object.values(rooms[player.inRoom].players).length+Object.values(rooms[player.inRoom].rest).length==0){//if there's no one
+             //変数初期化
              rooms[player.inRoom].deletee=true
+             //interval no nakade sakujyo
         }
     }
+    if(entrances[player.inRoom]){
+        if(entrances[player.inRoom].players[player.id]){
+            delete entrances[player.inRoom].players[player.id];
+            }else{
+            delete entrances[player.inRoom].rest[player.id]; 
+            }
+        //変数:初期化!!!!!!!
+
+      /*     if(Object.values(entrances[player.inRoom].players).length+Object.values(entrances[player.inRoom].rest).length==0){//if there's no one
+               delete  entrances[player.inRoom] //.deletee=true
+                 //部屋の削除
+            }*/
+    }
+
+    if(rooms[player.inRoom]&&!entrances[player.inRoom]){//rooms[]
+        io.to(player.inRoom).emit('current', { /*entrances:entrances[preplayer.room].players,*/ rooms:rooms[player.inRoom].players} )
+        }else if(entrances[player.inRoom]&&!rooms[player.inRoom]){
+      //  console.log("here:", lobby[preplayer.room].members)
+        io.to(player.inRoom).emit('current', { entrances:entrances[player.inRoom].players} )   
+        }else if(rooms[player.inRoom]&&entrances[player.inRoom]){
+        io.to(player.inRoom).emit('current', {entrances:entrances[player.inRoom].players,rooms:rooms[player.inRoom].players} )     
+        }
         //rooms[player.inRoom].rest[player.id]=player
        // console.log("bye",player.playername, rooms[player.inRoom].end)
-
+      // temporarilyCamp[player.inRoom].members[player.playername]={type:player.type}
+      temporarilyCamp[player.inRoom].members[player.id].page=undefined
+      temporarilyCamp[player.inRoom].members[player.id].watch()
+      //5秒後くらいにまだundefinedだったら、ホームページから去ったとみなしてtemporarilycampから指定idを削除する
         player = null;
-
+        console.log('player disconnected...')
         
         
     });
@@ -1470,26 +1836,29 @@ io.on('connection', (socket)=>{//function(socket){}
                 ninzu++
            }
            if(each.id==player.id){
-            which=1
+            //which=1
+             rooms[player.inRoom].players[player.id]=player
+            delete rooms[player.inRoom].rest[player.id]
            }
         })
-        if(which==1){
-            rooms[player.inRoom].players[player.id]=player
-            delete rooms[player.inRoom].rest[player.id]
-        }
-        if(ninzu==2&&rooms[player.inRoom].hiroba==false){
+      /*  if(which==1){
+            entrances[player.inRoom].players[player.id]=player
+            delete entrances[player.inRoom].rest[player.id]
+        }*/
+        if(ninzu==2/*&&rooms[player.inRoom].hiroba==false*/){
             console.log("ninzu is ",ninzu)
-            rooms[player.inRoom].end=false
-            rooms[player.inRoom].hiroba=true
+            //entranceからentrance
+            //rooms[player.inRoom].end=false
+           // rooms[player.inRoom].hiroba=true
             //rooms[player.inRoom].players[player.id]=player
-            rooms[player.inRoom].letsgo=false
-            rooms[player.inRoom].timeOn=false
-            rooms[player.inRoom].timeOn2=false
+            entrances[player.inRoom].letsgo=false
+            entrances[player.inRoom].timeOn=false
+            entrances[player.inRoom].timeOn2=false
 
-            rooms[player.inRoom].result=[]
-            rooms[player.inRoom].result2=[]
+            entrances[player.inRoom].result=[]
+            entrances[player.inRoom].result2=[]
 
-            Object.values(rooms[player.inRoom].players).forEach(each=>{
+            Object.values(entrances[player.inRoom].players).forEach(each=>{
                 if(each.again==true){
                 io.to(each.socketID).emit('again')
                 }
@@ -1497,7 +1866,7 @@ io.on('connection', (socket)=>{//function(socket){}
           //ninzu=2の時
            // io.to(player.inRoom).emit('again')
             //stop watch ストップ
-        }else if(ninzu>=2&&rooms[player.inRoom].hiroba==true){
+        }else if(ninzu>=2/*&&rooms[player.inRoom].hiroba==true*/){
             io.to(player.socketID).emit('again')
         }else{
             io.to(player.socketID).emit('wait-again',{message:"Now only you"})
@@ -1518,8 +1887,30 @@ io.on('connection', (socket)=>{//function(socket){}
 
 //if(Object.values(rooms).length>=1){
 setInterval(() => {
+    
+  
     Object.values(rooms).forEach((room)=>{
+      /* if(room.hiroba){
 
+            return
+        }*/
+        if(room.end==true){//どのプレイやもなにもボタンを押さなかったら
+           
+            io.to(room.NameOfroom).emit('restart',room.NameOfroom)
+            reset(room.NameOfroom)
+            changeArray(1,room.NameOfroom)
+            return
+        }
+        if(room.leaveRoom==true&&room.timeOn2==false){
+          /*  room.leaveRoom=false
+            entrances[room.NameOfroom]=rooms[room.NameOfroom]*/
+            room.zikan(5,2) //60
+            
+           /* delete rooms[room.NameOfroom]
+            room=null*/
+            room.timeOn2=true
+            
+        }
         if(room.deletee==true){
             //console.log('deletee by moi',rooms[room.NameOfroom])
            // io.to(room.NameOfroom).emit('room-delete') 
@@ -1535,39 +1926,41 @@ setInterval(() => {
                 delete platforms[platform.id] 
                 platform=null
             })*/
-            delete rooms[room.NameOfroom] 
-            
+            reset(room.NameOfroom)
+            changeArray(1,room.NameOfroom)
+           // delete rooms[room.NameOfroom] 
+
+             //変数初期化
             room=null//undefined
-           // console.log("room-delete", room)
-           
-           /* if (typeof window !== 'undefined') {
-                window.location.href="localhost:3000"
-              }*/
-            
-            //window.location.href="localhost:3000"
-            //ここでlocalhost3000に戻したい
+          
+            console.log("bye")
             return;
          }
-         if(Object.values(room.players).length==0&&Object.values(room.rest).length==0&&(room.end==true||room.during==true||room.incount==true)){//kokodaaaaaa
-              room.onway=true
+         if(Object.values(room.players).length==0&&Object.values(room.rest).length==0&&(/*room.end==true||*/room.during==true||room.incount==true)){//kokodaaaaaa
+            delete rooms[room.NameOfroom]
+            room=null
+            console.log("bye shit")
+            return
+
          }
-         if(room.realend==true){
+        /* if(room.realend==true){
             delete rooms[room.NameOfroom] 
-            room=null//undefined
+            room=null
             console.log("room-delete", room)
             return
-         }
+         }*/
          
          if(room.incount==true&&room.timeOn==false){
 
             room.zikan(matchLen+countD,1)
             //console.log("aaa")
             room.timeOn=true
+            //room.incount=false
          }  
-         if(room.end==true&&room.timeOn2==false){
+       /* if(room.timeOn2==false){
            room.zikan(60,2)
            room.timeOn2=true
-         }
+         }*/
          if(room.during==true&&room.letsgo==false){
             io.to(room.NameOfroom).emit('game-start')
             //console.log("fuck you")
@@ -1577,12 +1970,18 @@ setInterval(() => {
 
          Object.values(room.hps).forEach((hpp)=>{
             hpp.update()
+            if(hpp.effect!=null){
+                hpp.effect.update()
+            }
          })
          Object.values(room.buls).forEach((monk)=>{
             monk.update()
          })
          Object.values(room.invisible).forEach((cloak)=>{
             cloak.update()
+            if(cloak.effect!=null){
+                cloak.effect.update()
+            }
          })
     
           // if(room!=undefined||room!=null){
@@ -1648,6 +2047,46 @@ setInterval(() => {
         }
         //var rand = Math.floor(Math.random() * (max + 1 - min)) + min
      return array
+
+    }
+
+    function changeArray(ver,num){
+        switch(ver){
+            case 0:
+               rooms[num]=entrances[num]//kokodeつうしんきれたらどうなるんw
+
+               delete entrances[num]
+            break
+
+            case 1:
+               entrances[num]=rooms[num]
+
+               delete rooms[num]
+            break
+        }
+    }
+
+    function reset(num){
+        rooms[num].letsgo=false
+        rooms[num].timeOn=false
+        rooms[num].timeOn2=false
+        rooms[num].deletee=false
+        rooms[num].leaveRoom=false
+        rooms[num].end=false
+        rooms[num].during=false
+        rooms[num].incount=false
+
+        rooms[num].temps=undefined
+        
+
+        rooms[num].result.length=0
+        rooms[num].result2.length=0
+
+        rooms[num].hpplusTime.length=0
+        rooms[num].beamPlusTime.length=0
+        rooms[num].invisibleTime.length=0
+
+
 
     }
 

@@ -6,9 +6,14 @@
   <!--  <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300&display=swap" rel="stylesheet"> -->
+  
+
+    <link rel="icon" type="image/png" href="../static/pics/faviconVer.png">
+     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300&family=VT323&display=swap" rel="stylesheet">
+
     <title>Boxers In The Universe-Browser game</title>
    <!-- <script defer src="/static/script.js"></script>-->
     <meta name="description" content="hey, let's play the game">
@@ -23,39 +28,122 @@
         padding: 10px;
         padding-top: 20px;
         background-color: black;
+        font-family: 'VT323', monospace;
+        
     }
     .container{
         display: flex;
+       
         /*font-family: 'Rajdhani', sans-serif;*/
         font-family: 'VT323', monospace;
-        
+        margin-left: 30%;
+       /* margin-right: auto;*/
         /*font-size: 20px;*/
     }
     #item{
+    
        margin: 0px;
-
+       width: 200px;
+       /*height:600px;*/
        padding: 20px;
        border:  2px solid rgb(36,227,49);
-       border-left: none;
+      /* border-left: none;*/
        /*width: 20%;*/
     }
     #item2{
-         margin: 0;
+        /* width: 1024px;*/
+        position: relative;
+        margin: 0;
          padding: 0;
-         /*width: 80%;*/
+         width: 220px;
+         height: 620px;
+         padding-bottom: 0px;
+         border:  2px solid rgb(36,227,49);
+         border-right: none;
+         
+        /* width: 400px;*/
         
+         
     }
-   canvas{
-    background-image: url(../static/pics/gameBackg.png);
-    /*background-position: bottom;*/
-   background-size: contain;
-   background-repeat: no-repeat;
-    background-color: rgb(8, 13, 105);
-    border: 2px solid rgb(36,227,49);
-    /*background: rgba(0, 0, 0, 0.6);*/
-    /*width: 500px;
-    height:500px;*/
+    #choose{
+      text-align: center;
+      border: 2px solid rgb(36,227,49);
+      color: rgb(36, 227, 49);
+      padding: 20px;
+    }
+    #yourname{
+      font-size: 20px;
+    }
+    #gobtn{
+      margin-left: 10px;
+      font-size: 20px;
+    }
+    h1{
+        margin: 0;
+        margin-bottom: 20px;
+        padding: 0;
+    }
+    .sweden{
+      
+      display: flex;
+      
+    }
+    #mypic{
+      border: 2px solid  rgb(36,227,49);
+
+    }
+    #displayBox{
+      display: flex;
+      flex-direction: column;
+    }
+    .slide{
+      font-size: 20px;
+    }
+    #final{
+      margin-top: 20px;
+      font-size: 20px;
+      text-align: center;
+    }
+    .daa{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    color:rgb(36, 227, 49);
+    border-bottom: 2px solid rgb(36, 227, 49);
+   
    }
+
+    #profile{
+     
+      text-align: center;
+    }
+    /*#username{
+      margin: 10px;
+      padding: 5px;
+      margin-bottom: 0px;
+     
+    }*/
+    #photo{
+      
+      margin: 10px;
+      padding: 0;
+      margin-bottom: 20px;
+     
+      border: 2px solid rgb(36,227,49);
+    }
+    #nextpage{
+       text-decoration: none;
+       margin: 10px;
+       margin-top: 10px;
+       margin-bottom: 10px;
+       padding: 5px;
+       padding-top: 3px;
+       background-color: red;
+       color: black;
+       
+    }
+    
    
    #message{
      list-style: none;
@@ -65,32 +153,7 @@
      font-size:16px;
      
    }
-   #startBtn{
-    display: none;
-     margin: 10px;
-     padding: 5px;
-     width: 90%;
-   }
-   /*.sunroof{
-    display: none;
-     margin: 10px;
-     padding: 5px;
-     width: 90%;
-   }*/
-   /*.sunroof{
-     
-   }*/
-   /*canvas{
-    border-style: double;
-   }*/
    
-   /*#timer{
-     position: absolute;
-     background-color: black;
-     color: aqua;
-     font-size: 50px;
-     font-family: 'Rajdhani', sans-serif;
-   }*/
    .trash{
     font-family: 'VT323', monospace;
     /*font-family: 'Rajdhani', sans-serif;*/
@@ -103,50 +166,22 @@
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
+  
    }
-   /*button{
-    font-family: 'VT323', monospace;
-    color:  rgb(36, 227, 49);
-	background: none;
-	border: 2px solid rgb(36, 227, 49);
-	outline: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-
-   }*/
-
-   /*button:focus{
-    background: rgb(36, 227, 49);
-    color: black;
-   }*/
-
-   /*input{
-    font-family: 'VT323', monospace;
-    color:  rgb(36, 227, 49);
-	background: none;
-	border: 2px solid rgb(36, 227, 49);
-	outline: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-
-   }*/
+   
    #mat{
     display: flex;
      margin: 0;
      padding: 0;
      border-bottom: 2px solid rgb(36, 227, 49);
    }
-   #clip{
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding: 0;
-    color:rgb(36, 227, 49);
+   
+   #dusk{
+    text-align: center;
+    border: none;
     border-bottom: 2px solid rgb(36, 227, 49);
    }
-   #xxx{
+   .xxx{
     margin: 10px;
     margin-top: 0;
     margin-bottom: 3px;
@@ -158,7 +193,7 @@
     margin-bottom: 5px;
     padding: 5px;
    }
-   #cpbtn{
+   .cpbtn{
      margin: 10px;
      margin-top: 5px;
      padding: 5px;
@@ -186,6 +221,9 @@
     padding: 5px;
     padding-left: 0;
    }
+   #username{
+    color: orange
+   }
    #haa{
       margin: 0px;
       padding: 10px;
@@ -197,18 +235,18 @@
     color:rgb(36, 227, 49) ;
     text-align: center;
    }
-   #MoreBtn{
-    display: none;
-     margin: 10px;
-     padding: 5px;
-     width: 90%;
+   .smallpics{
+    margin: 0;
+    padding: 0;
+    margin-right: 10px;
+    /*margin-top: 10px;*/
    }
-    #OutBtn{
-      display: none;
-     margin: 10px;
-     padding: 5px;
-     width: 90%; 
-    }
+   li{
+    display: flex;
+    margin-bottom: 5px;
+   
+   }
+   
    #yy{
     margin: 0px;
     padding: 0px;
@@ -228,69 +266,197 @@
    .banana{
     color: yellow;
    }
+   .orangena{
+    color: orange;
+   }
+   .midori{
+      margin-left: 10px;
+      margin-top: 3px;
+      padding: 0;
+      height: 10px;
+      width: 10px;
+      background-color: blue;
+   }
+   .aka{
+    margin-left: 10px;
+    margin-top: 3px;
+    padding: 0;
+    height: 10px;
+    width: 10px;
+    background-color: red;
+   }
+   .under{
+    margin-bottom: 10px;
+   }
+   #everyon{
+    margin-bottom: 0;
+    padding-bottom: 0;
+    color:rgb(36, 227, 49) ;
+   }
+   #chatting{
+    margin-left: 10px;
+    margin-right: 10px;
+     padding-left: 0px;
+     color:rgb(36, 227, 49) ;
+     height: 200px;
+     overflow: auto;
+
+    
+   }
+   /*以下は古い構文　新しいのは効かない*/
+   .bar::-webkit-scrollbar {
+    width: 5px;
+}
+.bar::-webkit-scrollbar-track {
+    background-color:rgb(36, 227, 49) ;
+    /*border-radius: 100px;*/
+}
+.bar::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 20px rgb(160, 28, 90);
+    /*border-radius: 100px;*/
+}
+   #sen{
+     display: flex;
+     position: absolute;
+     bottom: 0;
+     width: 100%;
+     margin: 0px;
+    /* margin-bottom: 500px;*/
+     padding: 0px;
+     
+   }
+  
+   .scroll{
+    height: 100px;
+    overflow: auto;
+   }
+   
+   #txtbox{
+    margin: 0;
+    
+    font-size: 20px;
+    width: 80%;
+   }
+   #sendb{
+    /* ./同列　　../一つ上  */
+   /* background-color: rgb(253, 4, 208);*/
+    margin: 0;
+    padding: 0;
+    width: 20%;
+   }
+   .daimei{
+    margin: 10px;
+      padding: 5px;
+      margin-bottom: 0px;
+      color:rgb(36, 227, 49) ;
+   }
+   #why{
+    margin: 0;
+    padding: 0;
+   }
+   .sita{
+    margin-bottom: 10px;
+   }
+   .listright{
+    margin-left: 10px;
+    /*padding-left: 5px;*/
+   }
+   
 
 
     </style>
   
   </head>
   <body>
+    <div id="choose"><h1 id="title">What's your player name</h1>
+
+      <div id="chooseName" class="sweden">
+        
+         <input type="text" class="trash" id="yourname" placeholder="player name">
+         <button class="trash" onclick="next()" id="gobtn">GO</button>
+         
+      </div>
+  
+      <div id="displayBox" style="display: none;"  >
+      <div id="slideshow" class="sweden">
+      <button class="trash slide" onclick="change(0)" >&lt;</button>
+      <img id="mypic" src="/static/pics/0/syomen.png" width="200" height="200">
+      <button class="trash slide" onclick="change(10)" >&gt;</button>
+      </div>
+      <button onclick="startg()" class="trash" id="final">GO</button>
+      </div>
+  
+       
+  
+  
+      </div><!--choose-->
+  
   
 <!--  <div id="disc"></div>-->
 <div class="container"><!--sunrrof-->
-  <div id="item2" >
-    <canvas></canvas>
-    </div>
-  <div id="item">
-  <p id="haa" class="sunroof">Everyone who's gonna play this game with you is in this room already?</p>
-  <div id="checkbo">
-  Yeah <input type="checkbox" name="goo" value="Yes" id="chbox" onclick="Yaay(this)"></div>
-  <button id="startBtn" type="submit" onclick="StartButton()" class="sunroof trash">Ready to fight</button>
-  <div id="mat">
-  <div id="setume" class="sunroof"></div>
-  <div id="timer" class="sunroof">3:00</div>
+
+
+  <div id="item2" style="display: none;">
+
+   <div class="daa">
+    <h2 class="daimei">Boxers in the universe</h2>
+    <p class="daimei sita" >This is an online game developed by a quite intelligent monkey in 1982.<br>
+      The rule is very simple, the winner is the one whose hp is the highest at the end of the 3 minute match.<br>
+      You lose hp when hit by beams shot by other players or bump into creepy creatures. If your hp turns zero in the match, you die, which means you lose the game haha.</p>
+   </div>
+   <!-- <canvas style="display: none;" ></canvas> -->
+      <h2 class="daimei">Chat Box</h2>
+      <ul id="chatting" class="bar"></ul><!--position fixed absolute(親は relative)-- bottom top >-->
+      <form id="sen">
+      <input type="text" id="txtbox" class="trash" placeholder="message.."><button type="submit" class="trash" id="sendb" ><img src="/static/pics/send-button.png" width="20" height="20"></button>
+      </form>
+     
+
+    </div><!--item2-->
+
+  <div id="item" style="display: none;" >
+
+  <div id="profile" class="daa">
+  <h2 id="username" class="daimei"></h2>
+  <div id="why"><img id="photo" src="#" width="100" height="100" ></div>
+  <button class="trash cpbtn" onclick="changeaa()" >change the character</button>
   </div>
-  <div id="clip" >
+  <!--  <p id="haa" class="sunroof" style="display: none;">Everyone who's gonna play this game with you is in this room already?</p>
+    <div id="checkbo">
+  Yeah <input type="checkbox" name="goo" value="Yes" id="chbox" onclick="Yaay(this)"></div> 
+  <button id="startBtn" type="submit" onclick="StartButton()" class="sunroof trash">Ready to fight</button> -->
+ <!-- <div id="mat"> -->
+ <!-- <div id="setume" class="sunroof"></div>
+  <div id="timer" class="sunroof">3:00</div> -->
+ <!-- </div> -->
+  <div id="clip" class="daa">
   <input id="copyTarget" type="text" value="" readonly class="trash">
-  <button onclick="copyToClipboard()" id="cpbtn" class="trash">Copy the link of this room</button>
-  <p id="xxx" class="sunroof">Send the link above to your friends to play this game</p>
+  <button onclick="copyToClipboard()" class="trash cpbtn">Copy the link of this room</button>
+  <p class="sunroof xxx">Send the link above to your friends to play this game</p>
+  </div><!-- Send the link above to your friends to play this game --><!--Envoyez le lien ci-dessus à vos amis pour jouer à ce jeu-->
+  
+  <div class="daa" id="dusk"><!--formにする?-->
+  <a href="" id="nextpage" >Go fight</a>
   </div>
-  <ul id="message">
-   
-     <li class="banana"> -Left: A key</li>
-     <li class="banana">-Right: D key</li>
-     <li class="banana"> -Jump: W key</li>
-     <li class="banana">-Left beam: L key</li>
-     <li class="banana">-Reft beam: J key</li>
-     <li class="banana">-Punch: I key</li>
+
+  <p class="xxx" id="everyon">Member(s) in this room now</p>
+  <ul id="message" class="scroll bar">
   </ul>
-  <button id="MoreBtn" type="submit" onclick="more()" class="sunroof trash">One More Time</button>
-  <button id="OutBtn" type="submit" onclick="outta()" class="sunroof trash">Get outta here</button>
-<!-- <form id="sen" action="">
-  <input type="text" id="txtbox"><button>send</button>
-  </form>
--->
-  </div>
-</div>
-  <img id="player-image" src="/static/pics/syomen.png" style="display: none;">
-  <img id="player-image2" src="/static/pics/dotpict (1).png" style="display: none;">
-  <img id="player-image3" src="/static/pics/dotpict.png" style="display: none;">
-  <img id="player-image4" src="/static/pics/too.png" style="display: none;">
-  <img id="hpplus-image1" src="/static/pics/dotpict (3).png" style="display: none;">
-  <img id="enemy-image1" src="/static/pics/dotpictene.png" style="display: none;">
-  <img id="enemy-image2" src="/static/pics/dotpict (7).png" style="display: none;">
-  <img id="invisible-image" src="/static/pics/Invisible.png" style="display: none;">
- <!--<img id="unseen1" src="/static/pics/Unseen1.png" style="display: none;">
-  <img id="unseen2" src="/static/pics/Unseen2.png" style="display: none;">
-  <img id="unseen3" src="/static/pics/Unseen1.png" style="display: none;">-->
- <!--<div id="timer">aaa</div>--> 
+ <!--<footer>&copy; 1982 lazyduck</footer>-->
+  </div><!--item-->
+</div><!--container-->
   
   <!--script.jsを/staticに入れると正常に動くがそうでないと上手く読み込めない-->
  <script defer src="/static/script.js"></script>
   <script>
     const roomName="<%= roomName %>"
+    const again="<%=back %>"
+    const kiminonawa="<%=who%>"
+    const kind="<%= type%>"
+    let idd="<%= id%>"
     const jsFrame = new JSFrame();
    // const link=location.href
-  
+    
 
   </script>
 
