@@ -11,7 +11,7 @@ const gravity=0.3//0.5
 const hane=1.5 //跳ね返る計数的な
 const mojis="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 const url = require('url');  
-const matchLen=180
+const matchLen=120
 const countD=10
 const playerHpMAx=100
 //let totalPlayers=0
@@ -233,6 +233,7 @@ app.get('/:room',(req, res)=>{
         //console.log("req",req.query.name)
         let onam=temporarilyCamp[req.params.room].members[req.query.id].name
         let typ=temporarilyCamp[req.params.room].members[req.query.id].type
+        console.log("room in 1")
       //  let themessage="back from the arena"
       //  console.log("vogue")
         //idと名前、typeが見もづけられてるからqueryのidからname, type wo okuru
@@ -241,7 +242,7 @@ app.get('/:room',(req, res)=>{
     res.render('mainpage.ejs', {roomName: req.params.room, back:0, who:onam,type:typ, id:req.query.id})//mainpage.ejs
     }else{
        // console.log("ay")
-    
+       console.log("room in 2")
     res.render('mainpage.ejs', {roomName: req.params.room, back:1, who:null, type:null, id:null})   
     }
 })
