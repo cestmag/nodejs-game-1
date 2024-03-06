@@ -2,7 +2,7 @@ const { Console } = require('console')
 const express = require('express')//server end ctrl+c
 //const { platform } = require('os')
 const app= express()
-const server= require('http').Server(app)
+const server= require('https').Server(app)//ここhttps
 
 //server.listen(process.env.PORT||3000)
 //部屋mに誰もいなくなったら削除する

@@ -76,7 +76,7 @@ copyTarget.setAttribute('value',url)//idも含まれてしまう string a=locati
 
 //console.log("back:", again)
 if(again==0){//戻ってきた
-    console.log("fuuuuuuuuuuck")
+    console.log("nooooo")
     choose.style.display="none"
     itom.style.display="block"
     item2.style.display="block"
