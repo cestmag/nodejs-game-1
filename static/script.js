@@ -1,5 +1,5 @@
 //const socket=io('https://gamyyy.onrender.com')//io('http://localhost:3000')//io('https://boxersintheuniverse.herokuapp.com') // io('https://boxersintheuniverse.herokuapp.com')//io('http://localhost:3000')
-const socket  = io('http://nodejs-game-1-production.up.railway.app');//nodejs-game-1-production.up.railway.app
+const socket  = io('https://nodejs-game-1-production.up.railway.app');//nodejs-game-1-production.up.railway.app
 let playername=kiminonawa//=prompt("put player name")
 //const playername="asshole"
 //const canvas= document.querySelector('canvas')
