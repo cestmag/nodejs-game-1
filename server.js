@@ -1,12 +1,39 @@
 const { Console } = require('console')
+//added----------------------------------
+const fs = require('fs');
+const https = require('https');
+//added---------------------------------
+
 const express = require('express')//server end ctrl+c
 //const { platform } = require('os')
 const app= express()
-const server= require('http').Server(app)//ここhttps
 
+//httpならこっち!!!!!!!!!!!!!!!!!!!!!!!1
+//const server= require('http').Server(app)//ここhttps
+
+// Load SSL/TLS certificate and private key-----added
+const privateKey = fs.readFileSync('private-key.pem', 'utf8');
+const certificate = fs.readFileSync('certificate.pem', 'utf8');
+
+
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+    /*ca: ca, */// optional
+  };
+  
+  // Create an HTTPS server with your Express app
+  const httpsServer = https.createServer(credentials, app);
+  
+  // Use Socket.io with the HTTPS server
+  const io = require('socket.io')(httpsServer);
+//------------------------------------------------------added
 //server.listen(process.env.PORT||3000)
 //部屋mに誰もいなくなったら削除する
-const io= require('socket.io')(server)
+
+//httpならこっち!!!!!!!!!!!!!!!!!!!!!!!1
+//const io= require('socket.io')(server)
+
 const gravity=0.3//0.5
 const hane=1.5 //跳ね返る計数的な
 const mojis="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -2090,6 +2117,15 @@ setInterval(() => {
 
 
     }
+
+    // Start the HTTPS server
+httpsServer.listen(process.env.PORT || 3000, function (error) {
+    if (error) {
+      console.log("Errorrrr", error);
+    } else {
+      console.log("Heyyyy, HTTPS server is running");
+    }
+  });
 
     server.listen(process.env.PORT||3000, function(error){
         if(error){
