@@ -2127,10 +2127,10 @@ httpsServer.listen(process.env.PORT || 3000, function (error) {
     }
   });
 
-    server.listen(process.env.PORT||3000, function(error){
+ /*   server.listen(process.env.PORT||3000, function(error){
         if(error){
            console.log("errorrrr")
         }else{
            console.log("heyyyy")
         }
-    }) 
+    })*/ 
