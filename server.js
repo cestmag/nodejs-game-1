@@ -1,7 +1,7 @@
 const { Console } = require('console')
 //added----------------------------------
-const https = require('https');
-const fs = require('fs');
+/*const https = require('https');
+const fs = require('fs');*/
 //added---------------------------------
 
 const express = require('express')//server end ctrl+c
@@ -9,30 +9,30 @@ const express = require('express')//server end ctrl+c
 const app= express()
 
 //httpならこっち!!!!!!!!!!!!!!!!!!!!!!!1
-//const server= require('http').Server(app)//ここhttps
+const server= require('http').Server(app)//ここhttps
 
-// Load SSL/TLS certificate and private key-----added
-const privateKey = fs.readFileSync('private-key.pem', 'utf8');
+// Load SSL/TLS certificate and private key----------------------------added
+/*const privateKey = fs.readFileSync('private-key.pem', 'utf8');
 const certificate = fs.readFileSync('certificate.pem', 'utf8');
 
 
 const credentials = {
     key: privateKey,
     cert: certificate,
-    /*ca: ca, */// optional
+    ca: ca, // optional
   };
   
   // Create an HTTPS server with your Express app
   const httpsServer = https.createServer(credentials, app);
   
   // Use Socket.io with the HTTPS server
-  const io = require('socket.io')(httpsServer);
-//------------------------------------------------------added
+  const io = require('socket.io')(httpsServer);*/
+//---------------------------------------------------------------------added
 //server.listen(process.env.PORT||3000)
 //部屋mに誰もいなくなったら削除する
 
 //httpならこっち!!!!!!!!!!!!!!!!!!!!!!!1
-//const io= require('socket.io')(server)
+const io= require('socket.io')(server)
 
 const gravity=0.3//0.5
 const hane=1.5 //跳ね返る計数的な
@@ -2119,18 +2119,18 @@ setInterval(() => {
     }
 
     // Start the HTTPS server
-httpsServer.listen(process.env.PORT || 3000, function (error) {
+/*httpsServer.listen(process.env.PORT || 3000, function (error) {
     if (error) {
       console.log("Errorrrr", error);
     } else {
       console.log("Heyyyy, HTTPS server is running");
     }
-  });
-
- /*   server.listen(process.env.PORT||3000, function(error){
+  });*/
+//httpならこっち
+    server.listen(process.env.PORT||3000, function(error){
         if(error){
            console.log("errorrrr")
         }else{
            console.log("heyyyy")
         }
-    })*/ 
+    })
