@@ -66,7 +66,7 @@ app.get('/',(req, res)=>{
     var message=req.query.error
    // console.log("errror",message)
     if(message==undefined){
-    res.render('departure.ejs',{message:"Welcome to the game, mother fucker"})
+    res.render('departure.ejs',{message:"Welcome to the game"})
     }else if(message==0){
         res.render('departure.ejs',{message:"The room doesn't exsit. If you want to play, click the button below"}) 
     }else if(message==1){
